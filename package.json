@@ -1,6 +1,6 @@
 {
   "name": "svelte-adapter-appengine",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Adapter for Svelte that integrates with Google Cloud Appengine ",
   "repository": {
     "type": "git",
