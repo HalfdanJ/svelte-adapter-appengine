@@ -46,6 +46,7 @@
     "yaml": "^1.10.2"
   },
   "xo": {
+    "space": true, 
     "rules": {
       "node/prefer-global/process": ["off"]
     }
