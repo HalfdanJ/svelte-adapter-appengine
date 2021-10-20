@@ -11,7 +11,7 @@
     "url": "https://github.com/halfdanj/svelte-adapter-appengine/issues"
   },
   "author": "Jonas Jongejan <jonas@halfdanj.dk>",
-  "license": "MIT",
+  "license": "apache-2.0",
   "keywords": [
     "svelte",
     "sveltekit",
