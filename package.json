@@ -27,13 +27,15 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "fix": "xo --fix",
+    "test": "xo"
   },
   "files": [
     "files"
   ],
   "devDependencies": {
-    "@sveltejs/kit": "next"
+    "@sveltejs/kit": "next",
+    "xo": "^0.45.0"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -42,5 +44,10 @@
     "glob-promise": "^4.2.1",
     "polka": "^1.0.0-next.22",
     "yaml": "^1.10.2"
+  },
+  "xo": {
+    "rules": {
+      "node/prefer-global/process": ["off"]
+    }
   }
 }
