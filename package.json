@@ -2,6 +2,22 @@
   "name": "svelte-adapter-appengine",
   "version": "0.0.1",
   "description": "Adapter for Svelte that integrates with Google Cloud Appengine ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/halfdanj/svelte-adapter-appengine.git"
+  },
+  "homepage": "https://github.com/halfdanj/svelte-adapter-appengine#readme",
+  "bugs": {
+    "url": "https://github.com/halfdanj/svelte-adapter-appengine/issues"
+  },
+  "author": "Jonas Jongejan <jonas@halfdanj.dk>",
+  "license": "MIT",
+  "keywords": [
+    "svelte",
+    "sveltekit",
+    "sveltekit-adapter",
+    "appengine"
+  ],
   "type": "module",
   "exports": {
     ".": {
@@ -16,8 +32,6 @@
   "files": [
     "files"
   ],
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@sveltejs/kit": "next"
   },
