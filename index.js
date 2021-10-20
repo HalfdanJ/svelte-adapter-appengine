@@ -38,23 +38,6 @@ export default function (options) {
         inject: [join(files, "shims.js")],
         platform: "node",
         target: "node16",
-        // format:'esm',
-        // plugins: [
-        // 	{
-        // 		name: 'fix-middlewares-exclude',
-        // 		setup(build) {
-        // 			// Match an import of "middlewares.js" and mark it as external
-        // 			const internal_middlewares_path = resolve(join(dirs.tmp,'middlewares.js'));
-        // 			const build_middlewares_path = resolve(dir, 'middlewares.js');
-        // 			build.onResolve({ filter: /\/middlewares\.js$/ }, ({ path, resolveDir }) => {
-        // 				const resolved = resolve(resolveDir, path);
-        // 				if (resolved === internal_middlewares_path || resolved === build_middlewares_path) {
-        // 					return { path: './middlewares.js', external: true };
-        // 				}
-        // 			});
-        // 		}
-        // 	}
-        // ]
       };
 
       const build_options =
