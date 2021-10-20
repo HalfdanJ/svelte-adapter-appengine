@@ -3,6 +3,7 @@
 Utilize the [Google Cloud App Engine](https://cloud.google.com/appengine) infrastructure to host SvelteKit content.
 
 [![npm](https://img.shields.io/npm/v/svelte-adapter-appengine?color=green)](https://www.npmjs.com/package/svelte-adapter-appengine)
+[![Tests](https://github.com/halfdanj/svelte-adapter-appengine/actions/workflows/test.yml/badge.svg)](https://github.com/halfdanj/svelte-adapter-appengine/actions/workflows/test.yml)
 
 ## Setup
 
