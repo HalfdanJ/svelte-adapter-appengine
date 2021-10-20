@@ -1,64 +1,62 @@
 import polka from 'polka';
 import compression from 'compression';
-// import {kitMiddleware} from './middlewares.js';
-import { getRawBody } from '@sveltejs/kit/node';
-import { init, render } from '../output/server/app.js';
+import {getRawBody} from '@sveltejs/kit/node';
+import {init, render} from '../output/server/app.js';
 
-
-function create_kit_middleware({ render }) {
-	return async (req, res) => {
+function createKitMiddleware({render}) {
+	return async (request, response) => {
 		let parsed;
 		try {
-			parsed = new URL(req.url || '', 'http://localhost');
-		} catch (e) {
-			res.statusCode = 400;
-			return res.end('Invalid URL');
+			parsed = new URL(request.url || '', 'http://localhost');
+		} catch {
+			response.statusCode = 400;
+			return response.end('Invalid URL');
 		}
 
 		let body;
 
 		try {
-			body = await getRawBody(req);
-		} catch (err) {
-			res.statusCode = err.status || 400;
-			return res.end(err.reason || 'Invalid request body');
+			body = await getRawBody(request);
+		} catch (error) {
+			response.statusCode = error.status || 400;
+			return response.end(error.reason || 'Invalid request body');
 		}
 
 		const rendered = await render({
-			method: req.method,
-			headers: req.headers, // TODO: what about repeated headers, i.e. string[]
+			method: request.method,
+			headers: request.headers,
 			path: parsed.pathname,
 			query: parsed.searchParams,
-			rawBody: body
+			rawBody: body,
 		});
 
 		if (rendered) {
-			res.writeHead(rendered.status, rendered.headers);
+			response.writeHead(rendered.status, rendered.headers);
 			if (rendered.body) {
-				res.write(rendered.body);
+				response.write(rendered.body);
 			}
-			res.end();
+
+			response.end();
 		} else {
-			res.statusCode = 404;
-			res.end('Not found');
+			response.statusCode = 404;
+			response.end('Not found');
 		}
 	};
 }
 
-	init();
-const kitMiddleware = create_kit_middleware({ render });
-
+init();
+const kitMiddleware = createKitMiddleware({render});
 
 const server = polka().use(
-  compression({ threshold: 0 }),
+	compression({threshold: 0}),
 	kitMiddleware,
 );
 
 const port = process.env.PORT || 8080;
-const listenOpts = { port };
+const listenOptions = {port};
 
-server.listen(listenOpts, () => {
+server.listen(listenOptions, () => {
 	console.log(`Listening on ${port}`);
 });
 
-module.exports = server;
+export {server};
