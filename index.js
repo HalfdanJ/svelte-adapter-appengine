@@ -70,7 +70,8 @@ export default function (options) {
       utils.log.minor("Creating routes for static files"+staticFiles.join(', '));
 
       const staticFilesRoutes = staticFiles.map((f) => ({
-        url: "/" + f,
+        // Remove index.html from url
+        url: "/" + f.replace(/index\.html$/gi, ""),
         static_files: join("static", f),
         upload: join("static", f),
       }));
