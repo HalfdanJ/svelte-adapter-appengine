@@ -32,4 +32,8 @@ export default {
 The SSR part of SvelteKit is hosted on App Engine in a nodejs runtime. It's running using [polka](https://github.com/lukeed/polka) mimicking [@sveltejs/adapter-node
 ](https://github.com/sveltejs/kit/tree/master/packages/adapter-node).
 
-Static files are served directly from Cloud Storage without going througgh the nodejs webserver. Routes for all the static assets are automatically generated in `app.yaml` by the adapter.
+Static files are served directly from Cloud Storage without going through the nodejs webserver. Routes for all the static assets are automatically generated in `app.yaml` by the adapter.
+
+## Example
+
+An examplee app can be accessed on [https://svelte-demo-329602.uc.r.appspot.com/](https://svelte-demo-329602.uc.r.appspot.com/), this is the default demo app from sveltekit deployed with the default settings.
