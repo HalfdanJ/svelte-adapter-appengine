@@ -71,8 +71,8 @@ export default function entrypoint(options) {
         // Remove index.html from url
         url: '/' + f.replace(/index\.html$/gi, ''),
         // eslint-disable-next-line camelcase
-        static_files: join('static', f),
-        upload: join('static', f),
+        static_files: join('static', f).replace(/\\/g, '/'),
+        upload: join('static', f).replace(/\\/g, '/'),
       }));
 
       writeFileSync(
