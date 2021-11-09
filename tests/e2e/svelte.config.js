@@ -1,9 +1,11 @@
-import appengine from "svelte-adapter-appengine";
+import appengine from 'svelte-adapter-appengine';
 
 /** @type {import('@sveltejs/kit').Config} */
-export default {
+const config = {
   kit: {
     adapter: appengine(),
-    target: "#svelte",
+    target: '#svelte',
   },
 };
+
+export default config;
