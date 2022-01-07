@@ -1,18 +1,17 @@
 import polka from 'polka';
 import compression from 'compression';
 import {getRawBody} from '@sveltejs/kit/node';
-import {init, render} from '../output/server/app.js';
+// eslint-disable-next-line camelcase
+import {__fetch_polyfill} from '@sveltejs/kit/install-fetch';
+import {App} from 'APP';
+import {manifest} from './manifest.js';
 
-function createKitMiddleware({render}) {
+__fetch_polyfill();
+
+const app = new App(manifest);
+
+function createKitMiddleware() {
   return async (request, response) => {
-    let parsed;
-    try {
-      parsed = new URL(request.url || '', 'http://localhost');
-    } catch {
-      response.statusCode = 400;
-      return response.end('Invalid URL');
-    }
-
     let body;
 
     try {
@@ -22,11 +21,10 @@ function createKitMiddleware({render}) {
       return response.end(error.reason || 'Invalid request body');
     }
 
-    const rendered = await render({
+    const rendered = await app.render({
+      url: request.url,
       method: request.method,
       headers: request.headers,
-      path: parsed.pathname,
-      query: parsed.searchParams,
       rawBody: body,
     });
 
@@ -44,8 +42,7 @@ function createKitMiddleware({render}) {
   };
 }
 
-init();
-const kitMiddleware = createKitMiddleware({render});
+const kitMiddleware = createKitMiddleware();
 
 const server = polka().use(
   compression({threshold: 0}),
