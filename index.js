@@ -74,7 +74,7 @@ export default function entrypoint() {
               const staticPath = join('storage', id, 'index.html');
               serverRoutes.push(
                 {
-                  url: id,
+                  url: id + '/?$',
                   // eslint-disable-next-line camelcase
                   static_files: staticPath,
                   upload: staticPath,
