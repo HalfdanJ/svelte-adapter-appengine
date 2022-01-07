@@ -1,79 +1,101 @@
 import {writeFileSync} from 'node:fs';
-import {join} from 'node:path';
+import {join, posix} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import esbuild from 'esbuild';
 import YAML from 'yaml';
-import glob from 'glob-promise';
+import esbuild from 'esbuild';
 
-/**
- * @typedef {import('esbuild').BuildOptions} BuildOptions
- */
+const files = fileURLToPath(new URL('./files', import.meta.url));
 
 /** @type {import('.')} **/
-export default function entrypoint(options) {
+export default function entrypoint() {
   return {
     name: 'appengine',
 
-    async adapt({utils}) {
+    async adapt(builder) {
       const dir = '.appengine_build_output';
-      utils.rimraf(dir);
+      const temporary = builder.getBuildDirectory('appengine-tmp');
 
-      const files = fileURLToPath(new URL('./files', import.meta.url));
+      builder.rimraf(dir);
+      builder.rimraf(temporary);
 
-      const dirs = {
-        static: join(dir, 'static'),
-        client: join(dir, 'client'),
-        tmp: '.svelte-kit/appengine/',
-      };
+      builder.log.minor('Copying assets');
+      builder.writeClient(`${dir}/storage`);
+      // Builder.writeServer(`${dir}/server`);
+      builder.writeStatic(`${dir}/storage`);
 
-      utils.log.minor('Generating nodejs entrypoint...');
-      utils.rimraf(dirs.tmp);
-      utils.copy(join(files, 'entry.js'), '.svelte-kit/appengine/entry.js');
+      const relativePath = posix.relative(temporary, builder.getServerDirectory());
 
-      /** @type {BuildOptions} */
-      const defaultOptions = {
-        entryPoints: [join(dirs.tmp, 'entry.js')],
-        outfile: join(dir, 'index.js'),
-        bundle: true,
-        inject: [join(files, 'shims.js')],
-        platform: 'node',
-        target: 'node16',
-      };
-
-      const buildOptions = options && options.esbuild
-        ? await options.esbuild(defaultOptions) : defaultOptions;
-
-      await esbuild.build(buildOptions);
-
-      utils.log.minor('Writing package.json...');
-      writeFileSync(
-        join(dir, 'package.json'),
-        JSON.stringify({
-          type: 'commonjs',
-        }),
-      );
-
-      utils.log.minor('Prerendering static pages...');
-      await utils.prerender({
-        dest: dirs.static,
+      builder.log.minor('Prerendering static pages');
+      const prerenderedPaths = await builder.prerender({
+        dest: `${dir}/storage`,
       });
 
-      utils.log.minor('Copying assets...');
-      utils.copy_static_files(dirs.static);
-      utils.copy_client_files(dirs.client);
+      // Copy server handler
+      builder.copy(files, temporary, {replace: {
+        APP: `${relativePath}/app.js`,
+      }});
 
-      utils.log.minor('Writing app.yaml...');
+      writeFileSync(
+        `${temporary}/manifest.js`,
+        `export const manifest = ${builder.generateManifest({
+          relativePath,
+        })};\n`,
+      );
 
-      const staticFiles = await glob('**/*.*', {cwd: dirs.static});
-      utils.log.minor('Creating routes for static files' + staticFiles.join(', '));
+      await esbuild.build({
+        entryPoints: [`${temporary}/entry.js`],
+        outfile: `${dir}/index.js`,
+        target: 'node16',
+        bundle: true,
+        platform: 'node',
+      });
 
-      const staticFilesRoutes = staticFiles.map(f => ({
-        // Remove index.html from url
-        url: '/' + f.replace(/index\.html$/gi, ''),
-        // eslint-disable-next-line camelcase
-        static_files: join('static', f).replace(/\\/g, '/'),
-        upload: join('static', f).replace(/\\/g, '/'),
-      }));
+      writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
+
+      const serverRoutes = [];
+
+      builder.createEntries(route => {
+        const parts = [];
+
+        for (const segment of route.segments) {
+          if (segment.rest || segment.dynamic) {
+            parts.push('.*');
+          } else {
+            parts.push(segment.content);
+          }
+        }
+
+        const id = '/' + parts.join('/');
+        return {
+          id,
+          filter: _ => true,
+          complete: _ => {
+            if (prerenderedPaths.paths.includes(id)) {
+              const staticPath = join('storage', id, 'index.html');
+              serverRoutes.push(
+                {
+                  url: id + '/?$',
+                  // eslint-disable-next-line camelcase
+                  static_files: staticPath,
+                  upload: staticPath,
+                },
+              );
+            } else {
+              serverRoutes.push(
+                {
+                  url: id,
+                  secure: 'always',
+                  script: 'auto',
+                },
+              );
+            }
+          },
+        };
+      });
+
+      if (serverRoutes.length > 99) {
+        throw new Error('Too many url routes: ' + serverRoutes.length);
+      }
 
       writeFileSync(
         join(dir, 'app.yaml'),
@@ -81,22 +103,17 @@ export default function entrypoint(options) {
           runtime: 'nodejs16',
           entrypoint: 'node index.js',
           handlers: [
+            ...serverRoutes,
             {
-              url: '/_app',
+              url: '/',
               // eslint-disable-next-line camelcase
-              static_dir: 'client/_app',
-            },
-            ...staticFilesRoutes,
-            {
-              url: '/.*',
-              secure: 'always',
-              script: 'auto',
+              static_dir: 'storage',
             },
           ],
         }),
       );
 
-      utils.log.success('To deploy, run "gcloud app deploy --project <CLOUD_PROJECT_ID> .appengine_build_output/app.yaml"');
+      builder.log.success('To deploy, run "gcloud app deploy --project <CLOUD_PROJECT_ID> .appengine_build_output/app.yaml"');
     },
   };
 }
