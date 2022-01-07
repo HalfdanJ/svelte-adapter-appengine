@@ -66,30 +66,31 @@ export default function entrypoint() {
         }
 
         const id = '/' + parts.join('/');
+
+        if (prerenderedPaths.paths.includes(id)) {
+          const staticPath = join('storage', id, 'index.html');
+          serverRoutes.push(
+            {
+              url: id + '/?$',
+              // eslint-disable-next-line camelcase
+              static_files: staticPath,
+              upload: staticPath,
+            },
+          );
+        } else {
+          serverRoutes.push(
+            {
+              url: id,
+              secure: 'always',
+              script: 'auto',
+            },
+          );
+        }
+
         return {
           id,
           filter: _ => true,
-          complete: _ => {
-            if (prerenderedPaths.paths.includes(id)) {
-              const staticPath = join('storage', id, 'index.html');
-              serverRoutes.push(
-                {
-                  url: id + '/?$',
-                  // eslint-disable-next-line camelcase
-                  static_files: staticPath,
-                  upload: staticPath,
-                },
-              );
-            } else {
-              serverRoutes.push(
-                {
-                  url: id,
-                  secure: 'always',
-                  script: 'auto',
-                },
-              );
-            }
-          },
+          complete: _ => {},
         };
       });
 
