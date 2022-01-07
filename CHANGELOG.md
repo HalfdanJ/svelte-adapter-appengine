@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.1.1...v0.2.0) (2022-01-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update adapter to latest sveltekit version.
+
+### Code Refactoring
+
+* Update adapter to latest sveltekit version. ([a2fbd3a](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/a2fbd3a723cc8d28781306ef022ece03e0fac33a)), closes [#5](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/5)
+
 ### [0.1.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.1.0...v0.1.1) (2021-11-09)
 
 
