@@ -1,0 +1,20 @@
+runtime: nodejs16
+entrypoint: node index.js
+handlers:
+  - url: //?$
+    static_files: storage/index.html
+    upload: storage/index.html
+  - url: /about/?$
+    static_files: storage/about/index.html
+    upload: storage/about/index.html
+  - url: /todos.json
+    secure: always
+    script: auto
+  - url: /todos
+    secure: always
+    script: auto
+  - url: /todos/.*
+    secure: always
+    script: auto
+  - url: /
+    static_dir: storage
