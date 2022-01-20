@@ -1,4 +1,4 @@
-import {writeFileSync} from 'node:fs';
+import {writeFileSync, existsSync, readFileSync} from 'node:fs';
 import {join, posix} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import YAML from 'yaml';
@@ -98,12 +98,21 @@ export default function entrypoint() {
         throw new Error('Too many url routes: ' + serverRoutes.length);
       }
 
+      // Load existing app.yaml if it exists
+      let yaml = {};
+      if (existsSync('app.yaml')) {
+        builder.log.minor('Existing app.yaml found');
+        yaml = YAML.parse(readFileSync('app.yaml').toString());
+      }
+
       writeFileSync(
         join(dir, 'app.yaml'),
         YAML.stringify({
+          ...yaml,
           runtime: 'nodejs16',
           entrypoint: 'node index.js',
           handlers: [
+            ...yaml.handlers ?? [],
             ...serverRoutes,
             {
               url: '/',
