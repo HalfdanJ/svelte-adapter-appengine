@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.2.1...v0.3.0) (2022-01-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Make changes to support new request format in sveltekit
+
+### Code Refactoring
+
+* Make changes to support new request format in sveltekit ([5223c9a](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/5223c9a66e0b31876f61412eb6da96af44fca477))
+
 ### [0.2.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.2.0...v0.2.1) (2022-01-07)
 
 
