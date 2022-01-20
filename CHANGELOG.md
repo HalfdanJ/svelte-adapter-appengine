@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.3.0...v0.4.0) (2022-01-20)
+
+
+### Features
+
+* Add support for custom app.yaml file. Fixes [#14](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/14) ([4f2a4d6](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/4f2a4d61004e436368e2b5eb1343f99f8ae1eb95))
+
 ## [0.3.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.2.1...v0.3.0) (2022-01-20)
 
 
