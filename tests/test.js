@@ -22,10 +22,10 @@ describe('Integration test', () => {
 
   it('runs endpoints', done => {
     chai.request('http://localhost:8080')
-      .get('/todos.json')
+      .get('/todos/__data.json')
       .end((error, response) => {
         expect(response).to.have.status(200);
-        expect(response.body).to.deep.equal([]);
+        expect(response.body).to.deep.equal({todos: []});
         done();
       });
   });

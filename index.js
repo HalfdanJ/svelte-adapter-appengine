@@ -32,7 +32,8 @@ export default function entrypoint() {
 
       // Copy server handler
       builder.copy(files, temporary, {replace: {
-        APP: `${relativePath}/app.js`,
+        SERVER: `${relativePath}/index.js`,
+        MANIFEST: './manifest.js',
       }});
 
       writeFileSync(
@@ -52,51 +53,18 @@ export default function entrypoint() {
 
       writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
 
-      const serverRoutes = [];
+      const prerenderedPages = Array.from(prerenderedPaths.pages, ([src, page]) => ({
+        url: src + '/?$',
+        // eslint-disable-next-line camelcase
+        static_files: 'storage/' + page.file,
+        upload: 'storage/' + page.file,
+      }));
 
-      builder.createEntries(route => {
-        const parts = [];
-
-        for (const segment of route.segments) {
-          if (segment.rest || segment.dynamic) {
-            parts.push('.*');
-          } else {
-            parts.push(segment.content);
-          }
-        }
-
-        const id = '/' + parts.join('/');
-
-        if (prerenderedPaths.paths.includes(id)) {
-          const staticPath = join('storage', id, 'index.html');
-          serverRoutes.push(
-            {
-              url: id + '/?$',
-              // eslint-disable-next-line camelcase
-              static_files: staticPath,
-              upload: staticPath,
-            },
-          );
-        } else {
-          serverRoutes.push(
-            {
-              url: id,
-              secure: 'always',
-              script: 'auto',
-            },
-          );
-        }
-
-        return {
-          id,
-          filter: _ => true,
-          complete: _ => {},
-        };
-      });
-
-      if (serverRoutes.length > 99) {
-        throw new Error('Too many url routes: ' + serverRoutes.length);
-      }
+      const prerenderedRedirects = Array.from(prerenderedPaths.redirects, ([src, _]) => ({
+        url: src,
+        secure: 'always',
+        script: 'auto',
+      }));
 
       // Load existing app.yaml if it exists
       let yaml = {};
@@ -105,21 +73,34 @@ export default function entrypoint() {
         yaml = YAML.parse(readFileSync('app.yaml').toString());
       }
 
+      const serverRoutes = [
+        ...yaml.handlers ?? [],
+        ...prerenderedPages,
+        ...prerenderedRedirects,
+        {
+          url: `/${builder.appDir}/.+`,
+          // eslint-disable-next-line camelcase
+          static_dir: `storage/${builder.appDir}`,
+          expiration: '30d 0h',
+        },
+        {
+          url: '/.*',
+          secure: 'always',
+          script: 'auto',
+        },
+      ];
+
+      if (serverRoutes.length > 99) {
+        throw new Error('Too many url routes: ' + serverRoutes.length);
+      }
+
       writeFileSync(
         join(dir, 'app.yaml'),
         YAML.stringify({
           ...yaml,
           runtime: 'nodejs16',
           entrypoint: 'node index.js',
-          handlers: [
-            ...yaml.handlers ?? [],
-            ...serverRoutes,
-            {
-              url: '/',
-              // eslint-disable-next-line camelcase
-              static_dir: 'storage',
-            },
-          ],
+          handlers: serverRoutes,
         }),
       );
 

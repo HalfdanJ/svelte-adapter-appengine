@@ -9,18 +9,13 @@ handlers:
     static_files: storage/index.html
     upload: storage/index.html
   - url: /about/?$
-    static_files: storage/about/index.html
-    upload: storage/about/index.html
-  - url: /todos.json
+    static_files: storage/about.html
+    upload: storage/about.html
+  - url: /_app/.+
+    static_dir: storage/_app
+    expiration: 30d 0h
+  - url: /.*
     secure: always
     script: auto
-  - url: /todos
-    secure: always
-    script: auto
-  - url: /todos/.*
-    secure: always
-    script: auto
-  - url: /
-    static_dir: storage
 runtime: nodejs16
 entrypoint: node index.js

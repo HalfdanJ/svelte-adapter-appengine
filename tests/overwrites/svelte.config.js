@@ -4,7 +4,6 @@ import adapter from 'svelte-adapter-appengine';
 const config = {
   kit: {
     adapter: adapter(),
-    target: '#svelte',
   },
 };
 
