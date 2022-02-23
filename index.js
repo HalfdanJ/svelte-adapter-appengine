@@ -78,7 +78,7 @@ export default function entrypoint() {
         ...prerenderedPages,
         ...prerenderedRedirects,
         {
-          url: `/${builder.appDir}/.+`,
+          url: `/${builder.appDir}/`,
           // eslint-disable-next-line camelcase
           static_dir: `storage/${builder.appDir}`,
           expiration: '30d 0h',
