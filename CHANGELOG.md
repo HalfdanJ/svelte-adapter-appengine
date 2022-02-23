@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.5.0...v0.5.1) (2022-02-23)
+
+
+### Bug Fixes
+
+* Minor routing fix ([8109808](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/8109808462b8f4f8ee58572bbda5bb1b01e7bae4))
+
 ## [0.5.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.4.0...v0.5.0) (2022-02-23)
 
 
