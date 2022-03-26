@@ -1,5 +1,4 @@
 import path from 'node:path';
-// eslint-disable-next-line camelcase
 import {installFetch} from '@sveltejs/kit/install-fetch';
 import {getRequest, setResponse} from '@sveltejs/kit/node';
 import compression from 'compression';
