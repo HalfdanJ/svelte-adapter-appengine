@@ -26,9 +26,7 @@ export default function entrypoint() {
       const relativePath = posix.relative(temporary, builder.getServerDirectory());
 
       builder.log.minor('Prerendering static pages');
-      const prerenderedPaths = await builder.prerender({
-        dest: `${dir}/storage`,
-      });
+      builder.writePrerendered(`${dir}/storage`);
 
       // Copy server handler
       builder.copy(files, temporary, {replace: {
@@ -53,14 +51,14 @@ export default function entrypoint() {
 
       writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
 
-      const prerenderedPages = Array.from(prerenderedPaths.pages, ([src, page]) => ({
+      const prerenderedPages = Array.from(builder.prerendered.pages, ([src, page]) => ({
         url: src + '/?$',
         // eslint-disable-next-line camelcase
         static_files: 'storage/' + page.file,
         upload: 'storage/' + page.file,
       }));
 
-      const prerenderedRedirects = Array.from(prerenderedPaths.redirects, ([src, _]) => ({
+      const prerenderedRedirects = Array.from(builder.prerendered.redirects, ([src, _]) => ({
         url: src,
         secure: 'always',
         script: 'auto',
@@ -78,9 +76,9 @@ export default function entrypoint() {
         ...prerenderedPages,
         ...prerenderedRedirects,
         {
-          url: `/${builder.appDir}/`,
+          url: `/${builder.config.kit.appDir}/`,
           // eslint-disable-next-line camelcase
-          static_dir: `storage/${builder.appDir}`,
+          static_dir: `storage/${builder.config.kit.appDir}`,
           expiration: '30d 0h',
         },
         {
