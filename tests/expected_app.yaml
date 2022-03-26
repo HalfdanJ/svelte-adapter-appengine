@@ -11,7 +11,7 @@ handlers:
   - url: /about/?$
     static_files: storage/about.html
     upload: storage/about.html
-  - url: /_app/.+
+  - url: /_app/
     static_dir: storage/_app
     expiration: 30d 0h
   - url: /.*
