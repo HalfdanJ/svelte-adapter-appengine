@@ -76,10 +76,15 @@ export default function entrypoint() {
         ...prerenderedPages,
         ...prerenderedRedirects,
         {
+          url: `/${builder.config.kit.appDir}/immutable/`,
+          // eslint-disable-next-line camelcase
+          static_dir: `storage/${builder.config.kit.appDir}/immutable`,
+          expiration: '30d 0h',
+        },
+        {
           url: `/${builder.config.kit.appDir}/`,
           // eslint-disable-next-line camelcase
           static_dir: `storage/${builder.config.kit.appDir}`,
-          expiration: '30d 0h',
         },
         {
           url: '/.*',
