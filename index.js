@@ -8,7 +8,7 @@ const files = fileURLToPath(new URL('./files', import.meta.url));
 
 /** @type {import('.')} **/
 export default function entrypoint(options = {}) {
-  const {out = 'build'} = options;
+  const {out = 'build', external = []} = options;
 
   return {
     name: 'appengine',
@@ -47,7 +47,7 @@ export default function entrypoint(options = {}) {
         platform: 'node',
         format: 'cjs',
         sourcemap: 'linked',
-        external: [],
+        external,
       });
 
       writeFileSync(`${out}/package.json`, JSON.stringify({type: 'commonjs'}));
