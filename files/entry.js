@@ -1,5 +1,5 @@
 import path from 'node:path';
-import {installFetch} from '@sveltejs/kit/install-fetch';
+import {installPolyfills} from '@sveltejs/kit/node/polyfills';
 import {getRequest, setResponse} from '@sveltejs/kit/node';
 import compression from 'compression';
 import {manifest} from 'MANIFEST';
@@ -7,7 +7,7 @@ import polka from 'polka';
 import sirv from 'sirv';
 import {Server} from 'SERVER';
 
-installFetch();
+installPolyfills();
 
 const app = new Server(manifest);
 
