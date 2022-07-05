@@ -7,26 +7,24 @@ import esbuild from 'esbuild';
 const files = fileURLToPath(new URL('./files', import.meta.url));
 
 /** @type {import('.')} **/
-export default function entrypoint() {
+export default function entrypoint(options = {}) {
+  const {out = 'build'} = options;
+
   return {
     name: 'appengine',
 
     async adapt(builder) {
-      const dir = '.appengine_build_output';
-      const temporary = builder.getBuildDirectory('appengine-tmp');
+      const temporary = builder.getBuildDirectory('svelte-adapter-appengine');
 
-      builder.rimraf(dir);
+      builder.rimraf(out);
       builder.rimraf(temporary);
 
       builder.log.minor('Copying assets');
-      builder.writeClient(`${dir}/storage`);
-      // Builder.writeServer(`${dir}/server`);
-      builder.writeStatic(`${dir}/storage`);
+      builder.writeClient(`${out}/storage`);
+      builder.writeStatic(`${out}/storage`);
+      builder.writePrerendered(`${out}/storage`);
 
       const relativePath = posix.relative(temporary, builder.getServerDirectory());
-
-      builder.log.minor('Prerendering static pages');
-      builder.writePrerendered(`${dir}/storage`);
 
       // Copy server handler
       builder.copy(files, temporary, {replace: {
@@ -43,13 +41,16 @@ export default function entrypoint() {
 
       await esbuild.build({
         entryPoints: [`${temporary}/entry.js`],
-        outfile: `${dir}/index.js`,
+        outfile: `${out}/index.js`,
         target: 'node16',
         bundle: true,
         platform: 'node',
+        format: 'cjs',
+        sourcemap: 'linked',
+        external: [],
       });
 
-      writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
+      writeFileSync(`${out}/package.json`, JSON.stringify({type: 'commonjs'}));
 
       const prerenderedPages = Array.from(builder.prerendered.pages, ([src, page]) => ({
         url: src + '/?$',
@@ -98,7 +99,7 @@ export default function entrypoint() {
       }
 
       writeFileSync(
-        join(dir, 'app.yaml'),
+        join(out, 'app.yaml'),
         YAML.stringify({
           ...yaml,
           runtime: 'nodejs16',
@@ -107,7 +108,7 @@ export default function entrypoint() {
         }),
       );
 
-      builder.log.success('To deploy, run "gcloud app deploy --project <CLOUD_PROJECT_ID> .appengine_build_output/app.yaml"');
+      builder.log.success(`To deploy, run "gcloud app deploy --project <CLOUD_PROJECT_ID> ${out}/app.yaml"`);
     },
   };
 }
