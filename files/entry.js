@@ -8,7 +8,7 @@ import {Server} from 'SERVER';
 
 installPolyfills();
 
-const app = new Server(manifest);
+const server = new Server(manifest);
 
 // eslint-disable-next-line unicorn/prefer-module
 const staticServe = sirv(path.join(__dirname, 'storage'), {
@@ -20,20 +20,23 @@ const staticServe = sirv(path.join(__dirname, 'storage'), {
 });
 
 /** @type {import('polka').Middleware} */
-function createKitMiddleware() {
-  return async (request_, response) => {
-    let request;
+const ssr = async (request_, response) => {
+  let request;
 
-    try {
-      request = await getRequest(getBase(request_.headers), request_);
-    } catch (error) {
-      response.statusCode = error.status || 400;
-      return response.end(error.reason || 'Invalid request body');
-    }
+  try {
+    request = await getRequest(getBase(request_.headers), request_);
+  } catch (error) {
+    response.statusCode = error.status || 400;
+    return response.end(error.reason || 'Invalid request body');
+  }
 
-    setResponse(response, await app.respond(request));
-  };
-}
+  const res = await server.respond(request, {
+    getClientAddress() {
+      return request.headers.get('x-forwarded-for');
+    },
+  });
+  setResponse(response, res);
+};
 
 /**
  * @param {import('http').IncomingHttpHeaders} headers
@@ -45,17 +48,15 @@ function getBase(headers) {
   return `${protocol}://${host}`;
 }
 
-const kitMiddleware = createKitMiddleware();
-
-const server = polka()
+const polkaServer = polka()
   .use(staticServe)
-  .use(kitMiddleware);
+  .use(ssr);
 
 const port = process.env.PORT || 8080;
 const listenOptions = {port};
 
-server.listen(listenOptions, () => {
+polkaServer.listen(listenOptions, () => {
   console.log(`Listening on ${port}`);
 });
 
-export {server};
+export {polkaServer as server};

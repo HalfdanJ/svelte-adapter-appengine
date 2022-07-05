@@ -47,6 +47,9 @@ export default function entrypoint() {
         target: 'node16',
         bundle: true,
         platform: 'node',
+        format: 'cjs',
+        sourcemap: 'linked',
+        external:[]
       });
 
       writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
