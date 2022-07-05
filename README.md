@@ -25,7 +25,7 @@ export default {
 ```
 
 - `npm run build`.
-- Application can then be deployed by running `gcloud app deploy --project <CLOUD_PROJECT_ID> .appengine_build_output/app.yaml`. (learn more about gcloud utility [here](https://cloud.google.com/sdk/gcloud))
+- Application can then be deployed by running `gcloud app deploy --project <CLOUD_PROJECT_ID> build/app.yaml`. (learn more about gcloud utility [here](https://cloud.google.com/sdk/gcloud))
 
 ## Adapter Output
 

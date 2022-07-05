@@ -25,10 +25,10 @@ npm install polka@1.0.0-next.22 compression@^1.7.4 sirv@^2.0.2
 npm run build
 
 popd
-npx start-server-and-test "node ${TEST_DIR}/.appengine_build_output/index.js" http://localhost:8080/todos "TEST_DIR=${TEST_DIR}/ mocha ${SCRIPT_PATH}/../tests/test.js"
+npx start-server-and-test "node ${TEST_DIR}/build/index.js" http://localhost:8080/todos "TEST_DIR=${TEST_DIR}/ mocha ${SCRIPT_PATH}/../tests/test.js"
 
 # To test on real appengine instance
 # pushd $TEST_DIR
-# gcloud app deploy --project svelte-demo-329602 -q --version e2e-test --no-promote .appengine_build_output/app.yaml
+# gcloud app deploy --project svelte-demo-329602 -q --version e2e-test --no-promote build/app.yaml
 # popd
 rm -rf $TEST_DIR
