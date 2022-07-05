@@ -30,12 +30,11 @@ const ssr = async (request_, response) => {
     return response.end(error.reason || 'Invalid request body');
   }
 
-  const res = await server.respond(request, {
+  setResponse(response, await server.respond(request, {
     getClientAddress() {
       return request.headers.get('x-forwarded-for');
     },
-  });
-  setResponse(response, res);
+  }));
 };
 
 /**

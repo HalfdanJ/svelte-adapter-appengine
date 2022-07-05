@@ -7,8 +7,8 @@ import esbuild from 'esbuild';
 const files = fileURLToPath(new URL('./files', import.meta.url));
 
 /** @type {import('.')} **/
-export default function entrypoint(opts ={}) {
-  const { out = 'build' } = opts;
+export default function entrypoint(options = {}) {
+  const {out = 'build'} = options;
 
   return {
     name: 'appengine',
@@ -21,7 +21,6 @@ export default function entrypoint(opts ={}) {
 
       builder.log.minor('Copying assets');
       builder.writeClient(`${out}/storage`);
-      // builder.writeServer(`${out}/server`);
       builder.writeStatic(`${out}/storage`);
       builder.writePrerendered(`${out}/storage`);
 
@@ -48,7 +47,7 @@ export default function entrypoint(opts ={}) {
         platform: 'node',
         format: 'cjs',
         sourcemap: 'linked',
-        external:[]
+        external: [],
       });
 
       writeFileSync(`${out}/package.json`, JSON.stringify({type: 'commonjs'}));
