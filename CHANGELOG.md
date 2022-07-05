@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.6.1...v0.7.0) (2022-07-05)
+
+
+### Features
+
+* Change build dir to `build` to follow conventions ([73cbfc7](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/73cbfc741ffaddc0b09bdf2236c4d33e4c4f4a35))
+* Only serve immutable files with cache expiration  ([3bd4960](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/3bd4960c0db80f30f7588abbfdcecedcf33a5992))
+* Update esbuild to include source map ([b60f318](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/b60f318efde01d026c80653c0f1a361e8fbaffdb))
+
+
+### Bug Fixes
+
+* only set long expiration for files in _app/immutable directory ([89bc1c6](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/89bc1c6954525415a156e088f52dc868ef6143b3))
+* Remove compression from serving ([08746d4](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/08746d438409e62e475361b0b73ab1c10129a5a4))
+
 ### [0.6.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.6.0...v0.6.1) (2022-06-15)
 
 
