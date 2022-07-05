@@ -1,7 +1,6 @@
 import path from 'node:path';
 import {installPolyfills} from '@sveltejs/kit/node/polyfills';
 import {getRequest, setResponse} from '@sveltejs/kit/node';
-import compression from 'compression';
 import {manifest} from 'MANIFEST';
 import polka from 'polka';
 import sirv from 'sirv';
@@ -50,7 +49,7 @@ const kitMiddleware = createKitMiddleware();
 
 const server = polka()
   .use(staticServe)
-  .use(compression({threshold: 0}), kitMiddleware);
+  .use(kitMiddleware);
 
 const port = process.env.PORT || 8080;
 const listenOptions = {port};

@@ -45,7 +45,6 @@
     "xo": "^0.45.0"
   },
   "dependencies": {
-    "compression": "^1.7.4",
     "esbuild": "^0.13.4",
     "polka": "^1.0.0-next.22",
     "sirv": "^2.0.2",
