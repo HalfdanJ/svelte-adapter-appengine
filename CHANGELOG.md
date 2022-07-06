@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.7.0...v0.8.0) (2022-07-06)
+
+
+### Features
+
+* add `external` adapter option passed though to esbuild ([9171055](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/91710558c589ce8276fbf08acf6aa27e0dd36fae))
+
 ## [0.7.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.6.1...v0.7.0) (2022-07-05)
 
 
