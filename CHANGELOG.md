@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.8.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.8.0...v0.8.1) (2022-07-19)
+
+
+### Bug Fixes
+
+* Remove writeStatic from adapter code ([534d559](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/534d55911cc2e5a1a3dfabb125a3198357f8e2f8))
+
 ## [0.8.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.7.0...v0.8.0) (2022-07-06)
 
 
