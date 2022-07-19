@@ -21,7 +21,6 @@ export default function entrypoint(options = {}) {
 
       builder.log.minor('Copying assets');
       builder.writeClient(`${out}/storage`);
-      builder.writeStatic(`${out}/storage`);
       builder.writePrerendered(`${out}/storage`);
 
       const relativePath = posix.relative(temporary, builder.getServerDirectory());
