@@ -47,7 +47,14 @@ function getBase(headers) {
   return `${protocol}://${host}`;
 }
 
+/** @type {import('polka').Middleware} */
+function handleAh(_request, response) {
+  response.statusCode = 200;
+  response.end('OK');
+}
+
 const polkaServer = polka()
+  .get('/_ah/start', handleAh)
   .use(staticServe)
   .use(ssr);
 
