@@ -27,6 +27,16 @@ describe('Integration test', () => {
       });
   });
 
+  it('return 200 OK from /_ah/start scaling route', done => {
+    chai.request('http://localhost:8080')
+      .get('/_ah/start')
+      .end((error, response) => {
+        expect(response).to.have.status(200);
+        expect(response.text).to.equal('OK');
+        done();
+      });
+  });
+
   it('generates correct app.yaml', () => {
     const path = process.env.TEST_DIR;
     const yaml = fs.readFileSync(path + '/build/app.yaml').toString();
