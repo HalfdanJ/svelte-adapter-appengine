@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - main
-      - "v2"
 
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       HUSKY: 0
     steps:
