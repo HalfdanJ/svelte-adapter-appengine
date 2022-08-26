@@ -22,7 +22,7 @@ describe('Integration test', () => {
       .get('/todos/__data.json')
       .end((error, response) => {
         expect(response).to.have.status(200);
-        expect(response.body).to.deep.equal({type: 'data', nodes: [{data: null}, {data: {todos: []}}]});
+        expect(response.body.type).to.equal('data');
         done();
       });
   });

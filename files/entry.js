@@ -54,8 +54,10 @@ const polkaServer = polka()
 const port = process.env.PORT || 8080;
 const listenOptions = {port};
 
-polkaServer.listen(listenOptions, () => {
-  console.log(`Listening on ${port}`);
+server.init({env: process.env}).then(() => {
+  polkaServer.listen(listenOptions, () => {
+    console.log(`Listening on ${port}`);
+  });
 });
 
 export {polkaServer as server};
