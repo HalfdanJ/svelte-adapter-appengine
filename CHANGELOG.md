@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.8.2](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.8.1...v0.8.2) (2022-08-26)
+
+
+### Bug Fixes
+
+* Add server init ([f59b92c](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/f59b92c25f8710c9e25586a2d549519be8f416b2)), closes [#44](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/44)
+* Modify test to support sveltekit 406 ([ef11d09](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/ef11d09d0c91045b989ab1a726855282a3c54982))
+
 ### [0.8.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.8.0...v0.8.1) (2022-07-19)
 
 
