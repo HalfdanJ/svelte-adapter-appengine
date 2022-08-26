@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.8.2...v0.9.0) (2022-08-26)
+
+
+### Features
+
+* Return `200 OK` from `/_ah/start` ([f5f7e64](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/f5f7e64d3372aa8d3efd91bc98ba6c0a73522de0))
+
 ### [0.8.2](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.8.1...v0.8.2) (2022-08-26)
 
 
