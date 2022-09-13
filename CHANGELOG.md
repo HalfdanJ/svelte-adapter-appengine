@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.9.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.0...v0.9.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* Correctly read the protocol on localhost ([64889fa](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/64889fa1464d5e5aaa64c6b725baef9dd5264d56))
+* Solve multiple issues from sveltekit breaking changes ([#52](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/52)) ([450f29d](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/450f29dcb0e016435c1697cf10560a4b1b27cdc6))
+* update getRequest method call ([cdf93a2](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/cdf93a21cb80597abb52d8b31c40c804259e559a))
+
 ## [0.9.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.8.2...v0.9.0) (2022-08-26)
 
 
