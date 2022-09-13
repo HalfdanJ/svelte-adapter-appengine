@@ -42,8 +42,9 @@ const ssr = async (request_, response) => {
  * @returns
  */
 function getBase(headers) {
-  const protocol = 'https';
   const host = headers.host;
+  const isLocalhost = host.split(':')[0] === 'localhost';
+  const protocol = headers['x-forwarded-proto'] || (isLocalhost ? 'http' : 'https');
   return `${protocol}://${host}`;
 }
 
