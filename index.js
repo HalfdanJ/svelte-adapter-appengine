@@ -11,7 +11,7 @@ export default function entrypoint(options = {}) {
   const {out = 'build', external = []} = options;
 
   return {
-    name: 'appengine',
+    name: 'svelte-adapter-appengine',
 
     async adapt(builder) {
       const temporary = builder.getBuildDirectory('svelte-adapter-appengine');
