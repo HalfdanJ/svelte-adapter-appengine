@@ -19,10 +19,9 @@ describe('Integration test', () => {
 
   it('runs endpoints', done => {
     chai.request('http://localhost:8080')
-      .get('/todos/__data.json')
+      .get('/todos/__data.js')
       .end((error, response) => {
         expect(response).to.have.status(200);
-        expect(response.body.type).to.equal('data');
         done();
       });
   });

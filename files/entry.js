@@ -24,10 +24,12 @@ const ssr = async (request_, response) => {
   let request;
 
   try {
-    request = await getRequest(getBase(request_.headers), request_);
+    request = await getRequest(
+      {base: getBase(request_.headers), request: request_});
   } catch (error) {
     response.statusCode = error.status || 400;
-    return response.end(error.reason || 'Invalid request body');
+    response.end(error.reason || 'Invalid request body');
+    return;
   }
 
   setResponse(response, await server.respond(request, {
@@ -42,8 +44,9 @@ const ssr = async (request_, response) => {
  * @returns
  */
 function getBase(headers) {
-  const protocol = 'https';
   const host = headers.host;
+  const isLocalhost = host.split(':')[0] === 'localhost';
+  const protocol = headers['x-forwarded-proto'] || (isLocalhost ? 'http' : 'https');
   return `${protocol}://${host}`;
 }
 
