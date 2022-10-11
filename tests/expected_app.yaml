@@ -11,6 +11,9 @@ handlers:
   - url: /about/?$
     static_files: storage/about.html
     upload: storage/about.html
+  - url: /sverdle/how-to-play/?$
+    static_files: storage/sverdle/how-to-play.html
+    upload: storage/sverdle/how-to-play.html
   - url: /_app/immutable/
     static_dir: storage/_app/immutable
     expiration: 30d 0h

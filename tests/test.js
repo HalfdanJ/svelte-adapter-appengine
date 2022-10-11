@@ -10,16 +10,7 @@ chai.use(chaiHttp);
 describe('Integration test', () => {
   it('runs the server', done => {
     chai.request('http://localhost:8080')
-      .get('/todos')
-      .end((error, response) => {
-        expect(response).to.have.status(200);
-        done();
-      });
-  });
-
-  it('runs endpoints', done => {
-    chai.request('http://localhost:8080')
-      .get('/todos/__data.js')
+      .get('/sverdle')
       .end((error, response) => {
         expect(response).to.have.status(200);
         done();

@@ -25,7 +25,7 @@ npm install polka@1.0.0-next.22 compression@^1.7.4 sirv@^2.0.2
 npm run build
 
 popd
-npx start-server-and-test "node ${TEST_DIR}/build/index.js" http://localhost:8080/todos "TEST_DIR=${TEST_DIR}/ mocha ${SCRIPT_PATH}/../tests/test.js"
+npx start-server-and-test "node ${TEST_DIR}/build/index.js" http://localhost:8080 "TEST_DIR=${TEST_DIR}/ mocha ${SCRIPT_PATH}/../tests/test.js"
 
 # To test on real appengine instance
 # pushd $TEST_DIR
