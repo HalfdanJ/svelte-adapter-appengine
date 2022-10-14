@@ -29,3 +29,4 @@ handlers:
     script: auto
 runtime: nodejs16
 entrypoint: node index.js
+default_expiration: 0h

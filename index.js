@@ -106,6 +106,8 @@ export default function entrypoint(options = {}) {
           ...yaml,
           runtime: 'nodejs16',
           entrypoint: 'node index.js',
+          // eslint-disable-next-line camelcase
+          default_expiration: '0h',
           handlers: serverRoutes,
         }),
       );
