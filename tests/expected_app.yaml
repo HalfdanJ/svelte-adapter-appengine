@@ -8,17 +8,22 @@ handlers:
   - url: //?$
     static_files: storage/index.html
     upload: storage/index.html
+    secure: always
   - url: /about/?$
     static_files: storage/about.html
     upload: storage/about.html
+    secure: always
   - url: /sverdle/how-to-play/?$
     static_files: storage/sverdle/how-to-play.html
     upload: storage/sverdle/how-to-play.html
+    secure: always
   - url: /_app/immutable/
     static_dir: storage/_app/immutable
     expiration: 30d 0h
+    secure: always
   - url: /_app/
     static_dir: storage/_app
+    secure: always
   - url: /.*
     secure: always
     script: auto

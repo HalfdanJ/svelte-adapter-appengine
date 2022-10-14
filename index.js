@@ -20,8 +20,8 @@ export default function entrypoint(options = {}) {
       builder.rimraf(temporary);
 
       builder.log.minor('Copying assets');
-      builder.writeClient(`${out}/storage`);
-      builder.writePrerendered(`${out}/storage`);
+      builder.writeClient(`${out}/storage${builder.config.kit.paths.base}`);
+      builder.writePrerendered(`${out}/storage${builder.config.kit.paths.base}`);
 
       const relativePath = posix.relative(temporary, builder.getServerDirectory());
 
@@ -56,6 +56,7 @@ export default function entrypoint(options = {}) {
         // eslint-disable-next-line camelcase
         static_files: 'storage/' + page.file,
         upload: 'storage/' + page.file,
+        secure: 'always',
       }));
 
       const prerenderedRedirects = Array.from(builder.prerendered.redirects, ([src, _]) => ({
@@ -80,11 +81,13 @@ export default function entrypoint(options = {}) {
           // eslint-disable-next-line camelcase
           static_dir: `storage/${builder.config.kit.appDir}/immutable`,
           expiration: '30d 0h',
+          secure: 'always',
         },
         {
           url: `/${builder.config.kit.appDir}/`,
           // eslint-disable-next-line camelcase
           static_dir: `storage/${builder.config.kit.appDir}`,
+          secure: 'always',
         },
         {
           url: '/.*',
