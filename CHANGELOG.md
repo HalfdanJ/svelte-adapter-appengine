@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.9.2](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.1...v0.9.2) (2022-10-14)
+
+
+### Bug Fixes
+
+* Mark all paths as secure. ([243af43](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/243af43a3791d273e7bd39e38fd357eab4af6479)), closes [#50](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/50)
+* Set default expiration to none ([83a792d](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/83a792d5a56844b13414d37bf00d0f6cbcd333d8))
+* Small appyaml fixes ([#57](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/57)) ([d19cdfc](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/d19cdfc2e344173000dad25f43be0c5f19868f51))
+
 ### [0.9.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.0...v0.9.1) (2022-09-13)
 
 
