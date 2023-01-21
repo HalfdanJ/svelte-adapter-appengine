@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.9.3](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.2...v0.9.3) (2023-01-21)
+
+
+### Bug Fixes
+
+* Add prerendered assets to app.yaml ([#64](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/64)) ([8afbc21](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/8afbc21b039ddf95239bd6184b7db66a6621543c))
+
 ### [0.9.2](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.1...v0.9.2) (2022-10-14)
 
 
