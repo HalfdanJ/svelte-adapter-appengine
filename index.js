@@ -54,9 +54,19 @@ export default function entrypoint(options = {}) {
       const prerenderedPages = Array.from(builder.prerendered.pages, ([src, page]) => ({
         url: src + '/?$',
         // eslint-disable-next-line camelcase
-        static_files: 'storage/' + page.file,
-        upload: 'storage/' + page.file,
+        static_files: join('storage', page.file),
+        upload: join('storage', page.file),
         secure: 'always',
+      }));
+
+      const prerenderedAssets = Array.from(builder.prerendered.assets, ([path, {type}]) => ({
+        url: path,
+        // eslint-disable-next-line camelcase
+        static_files: join('storage', path),
+        upload: join('storage', path),
+        secure: 'always',
+        // eslint-disable-next-line camelcase
+        mime_type: type,
       }));
 
       const prerenderedRedirects = Array.from(builder.prerendered.redirects, ([src, _]) => ({
@@ -76,6 +86,7 @@ export default function entrypoint(options = {}) {
         ...yaml.handlers ?? [],
         ...prerenderedPages,
         ...prerenderedRedirects,
+        ...prerenderedAssets,
         {
           url: `/${builder.config.kit.appDir}/immutable/`,
           // eslint-disable-next-line camelcase

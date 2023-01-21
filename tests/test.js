@@ -28,6 +28,16 @@ describe('Integration test', () => {
       });
   });
 
+  it('return 200 OK from /test.json scaling route', done => {
+    chai.request('http://localhost:8080')
+      .get('/test.json')
+      .end((error, response) => {
+        expect(response).to.have.status(200);
+        expect(response.text).to.equal('{"test":true}');
+        done();
+      });
+  });
+
   it('generates correct app.yaml', () => {
     const path = process.env.TEST_DIR;
     const yaml = fs.readFileSync(path + '/build/app.yaml').toString();
