@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 import YAML from 'yaml';
 import esbuild from 'esbuild';
 
-const files = fileURLToPath(new URL('./files', import.meta.url));
+const files = fileURLToPath(new URL('files', import.meta.url));
 
 /** @type {import('.')} **/
 export default function entrypoint(options = {}) {
