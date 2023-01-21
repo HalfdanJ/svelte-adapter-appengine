@@ -35,7 +35,7 @@
     "files"
   ],
   "peerDependencies": {
-    "@sveltejs/kit": ">=1.0.0-next.341"
+		"@sveltejs/kit": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",
