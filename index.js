@@ -68,7 +68,7 @@ export default function entrypoint(options = {}) {
         // eslint-disable-next-line camelcase
         mime_type: type,
       }));
-      console.log(builder.prerendered.assets);
+
       const prerenderedRedirects = Array.from(builder.prerendered.redirects, ([src, _]) => ({
         url: src,
         secure: 'always',
