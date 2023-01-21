@@ -4,6 +4,9 @@ import adapter from 'svelte-adapter-appengine';
 const config = {
   kit: {
     adapter: adapter(),
+    prerender: {
+      entries: ['/test.json', '*'],
+    },
   },
 };
 

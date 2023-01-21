@@ -17,6 +17,11 @@ handlers:
     static_files: storage/sverdle/how-to-play.html
     upload: storage/sverdle/how-to-play.html
     secure: always
+  - url: /test.json
+    static_files: storage/test.json
+    upload: storage/test.json
+    secure: always
+    mime_type: application/json
   - url: /_app/immutable/
     static_dir: storage/_app/immutable
     expiration: 30d 0h
