@@ -1,4 +1,5 @@
 import path from 'node:path';
+import process from 'node:process';
 import {installPolyfills} from '@sveltejs/kit/node/polyfills';
 import {getRequest, setResponse} from '@sveltejs/kit/node';
 import {manifest} from 'MANIFEST';
