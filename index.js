@@ -40,10 +40,9 @@ export default function entrypoint(options = {}) {
       );
 
       // Add dependencies for logging and tracing
-      external.push('@google-cloud/trace-agent');
+      external.push('@google-cloud/trace-agent', '@google-cloud/logging-bunyan', 'bunyan');
       dependencies['@google-cloud/trace-agent'] = '^7.0.0';
       if (useCloudLogging) {
-        external.push('@google-cloud/logging-bunyan', 'bunyan');
         dependencies['@google-cloud/logging-bunyan'] = '^4.0.0';
         dependencies.bunyan = '^1.8.0';
       }
