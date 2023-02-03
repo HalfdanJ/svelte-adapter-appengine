@@ -28,7 +28,7 @@ describe('Integration test', () => {
       });
   });
 
-  it('return 200 OK from /test.json scaling route', done => {
+  it('return 200 OK from /test.json prerendered route', done => {
     chai.request('http://localhost:8080')
       .get('/test.json')
       .end((error, response) => {
@@ -43,5 +43,12 @@ describe('Integration test', () => {
     const yaml = fs.readFileSync(path + '/build/app.yaml').toString();
 
     expect(yaml).to.eq(fs.readFileSync('tests/expected_app.yaml').toString());
+  });
+
+  it('generates correct package.json', () => {
+    const path = process.env.TEST_DIR;
+    const packageJson = fs.readFileSync(path + '/build/package.json').toString();
+
+    expect(packageJson).to.eq(fs.readFileSync('tests/expected_package.json').toString());
   });
 });

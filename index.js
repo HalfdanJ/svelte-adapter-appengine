@@ -8,7 +8,7 @@ const files = fileURLToPath(new URL('files', import.meta.url));
 
 /** @type {import('.')} **/
 export default function entrypoint(options = {}) {
-  const {out = 'build', external = []} = options;
+  const {out = 'build', external = [], useCloudLogging = false, dependencies = {}} = options;
 
   return {
     name: 'svelte-adapter-appengine',
@@ -29,6 +29,7 @@ export default function entrypoint(options = {}) {
       builder.copy(files, temporary, {replace: {
         SERVER: `${relativePath}/index.js`,
         MANIFEST: './manifest.js',
+        USE_CLOUD_LOGGING: useCloudLogging,
       }});
 
       writeFileSync(
@@ -37,6 +38,15 @@ export default function entrypoint(options = {}) {
           relativePath,
         })};\n`,
       );
+
+      // Add dependencies for logging and tracing
+      external.push('@google-cloud/trace-agent');
+      dependencies['@google-cloud/trace-agent'] = '^7.0.0';
+      if (useCloudLogging) {
+        external.push('@google-cloud/logging-bunyan', 'bunyan');
+        dependencies['@google-cloud/logging-bunyan'] = '^4.0.0';
+        dependencies.bunyan = '^1.8.0';
+      }
 
       await esbuild.build({
         entryPoints: [`${temporary}/entry.js`],
@@ -49,7 +59,10 @@ export default function entrypoint(options = {}) {
         external,
       });
 
-      writeFileSync(`${out}/package.json`, JSON.stringify({type: 'commonjs'}));
+      writeFileSync(`${out}/package.json`, JSON.stringify({
+        type: 'commonjs',
+        dependencies,
+      }, null, 2));
 
       const prerenderedPages = Array.from(builder.prerendered.pages, ([src, page]) => ({
         url: src + '/?$',
