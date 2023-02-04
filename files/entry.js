@@ -90,7 +90,6 @@ const ssr = async (request_, response, next) => {
     /** @type {Request} */
     let request;
 
-    const getRequestSpan = tracer.createChildSpan({name: 'sveltekit.getRequest'});
     try {
       request = await getRequest(
         {base: getBase(request_.headers), request: request_});
@@ -100,12 +99,9 @@ const ssr = async (request_, response, next) => {
 
       rootSpan.addLabel('connect/request.route.path', request_.originalUrl);
       rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
-      getRequestSpan.endSpan();
       rootSpan.endSpan();
       return;
     }
-
-    getRequestSpan.endSpan();
 
     const renderSpan = tracer.createChildSpan({name: 'sveltekit.respond'});
     const ssrResponse = await server.respond(request, {
