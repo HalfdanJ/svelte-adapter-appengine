@@ -22,6 +22,14 @@ handlers:
     upload: storage/test.json
     secure: always
     mime_type: application/json
+  - url: /favicon.png
+    static_files: storage/favicon.png
+    upload: storage/favicon.png
+    secure: always
+  - url: /robots.txt
+    static_files: storage/robots.txt
+    upload: storage/robots.txt
+    secure: always
   - url: /_app/immutable/
     static_dir: storage/_app/immutable
     expiration: 30d 0h

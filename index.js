@@ -6,7 +6,7 @@ import esbuild from 'esbuild';
 
 const files = fileURLToPath(new URL('files', import.meta.url));
 
-/** @type {import('.')} **/
+/** @type {import('.').default} **/
 export default function entrypoint(options = {}) {
   const {out = 'build', external = [], useCloudLogging = true, dependencies = {}} = options;
 
@@ -20,8 +20,8 @@ export default function entrypoint(options = {}) {
       builder.rimraf(temporary);
 
       builder.log.minor('Copying assets');
-      builder.writeClient(`${out}/storage${builder.config.kit.paths.base}`);
       builder.writePrerendered(`${out}/storage${builder.config.kit.paths.base}`);
+      const clientFiles = builder.writeClient(`${out}/storage${builder.config.kit.paths.base}`);
 
       const relativePath = posix.relative(temporary, builder.getServerDirectory());
 
@@ -87,6 +87,17 @@ export default function entrypoint(options = {}) {
         script: 'auto',
       }));
 
+      // Add yaml entries for all files outside _app directory, such as favicons
+      const additionalClientAssets = clientFiles
+        .filter(file => !file.startsWith('_app/'))
+        .map(file => ({
+          url: '/' + file,
+          // eslint-disable-next-line camelcase
+          static_files: join('storage', file),
+          upload: join('storage', file),
+          secure: 'always',
+        }));
+
       // Load existing app.yaml if it exists
       let yaml = {};
       if (existsSync('app.yaml')) {
@@ -99,6 +110,7 @@ export default function entrypoint(options = {}) {
         ...prerenderedPages,
         ...prerenderedRedirects,
         ...prerenderedAssets,
+        ...additionalClientAssets,
         {
           url: `/${builder.config.kit.appDir}/immutable/`,
           // eslint-disable-next-line camelcase
