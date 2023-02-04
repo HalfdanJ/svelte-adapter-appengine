@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.10.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.3...v0.10.0) (2023-02-04)
+
+
+### Features
+
+* Add option to select GAE nodejs version ([#70](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/70)) ([6db2125](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/6db21252334f50050ac010a8baf4a12fc678b8a7))
+* Add support for Google Cloud Logging ([#67](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/67)) ([0dcc8a7](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/0dcc8a78cefe44045b46beab755cfab88a86a788))
+
+
+### Bug Fixes
+
+* Add favicon to app.yaml ([#68](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/68)) ([25ddfc2](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/25ddfc2bdeb117cc9925c7a543aadf39707ef4ac))
+
 ### [0.9.3](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.2...v0.9.3) (2023-01-21)
 
 
