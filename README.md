@@ -34,7 +34,7 @@ export default {
 Following options are available
 
 - `out`: Output directory of build step, defaults to `/build`
-- `useCloudLogging`: Enable or disable [Google Cloud Logging](https://cloud.google.com/logging/docs/overview). By enabling this, `console.log`, `console.error` and so on show up with more metadata in Cloud Logging dashboard, and log messages are bundled by request trace id's.
+- `useCloudLogging`: Enable or disable [Google Cloud Logging](https://cloud.google.com/logging/docs/overview). When enabled, `console.log`, `console.error` and so on show up with more metadata in Cloud Logging dashboard, and log messages are bundled by request trace id's. Enabled by default.
 - `external`: Node modules that the esbuild step should mark as external.
 - `dependencies`: Node modules that should be added to `package.json` file in the build step. These modules will be fetched when the application is deployed.
 
