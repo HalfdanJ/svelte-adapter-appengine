@@ -90,6 +90,7 @@ const ssr = async (request_, response, next) => {
     /** @type {Request} */
     let request;
 
+    const getRequestSpan = tracer.createChildSpan({name: 'sveltekit.getRequest'});
     try {
       request = await getRequest(
         {base: getBase(request_.headers), request: request_});
@@ -97,19 +98,26 @@ const ssr = async (request_, response, next) => {
       response.statusCode = error.status || 400;
       response.end(error.reason || 'Invalid request body');
 
-      rootSpan.addLabel('connect/request.route.path', request.originalUrl);
+      rootSpan.addLabel('connect/request.route.path', request_.originalUrl);
       rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
+      getRequestSpan.endSpan();
       rootSpan.endSpan();
       return;
     }
 
-    setResponse(response, await server.respond(request, {
+    getRequestSpan.endSpan();
+
+    const renderSpan = tracer.createChildSpan({name: 'sveltekit.respond'});
+    const ssrResponse = await server.respond(request, {
       getClientAddress() {
         return request.headers.get('x-forwarded-for');
       },
-    }));
+    });
+    renderSpan.endSpan();
 
-    rootSpan.addLabel('connect/request.route.path', request.originalUrl);
+    setResponse(response, ssrResponse);
+
+    rootSpan.addLabel('connect/request.route.path', request_.originalUrl);
     rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
     rootSpan.endSpan();
   });
