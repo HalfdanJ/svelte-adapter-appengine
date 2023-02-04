@@ -1,0 +1,6 @@
+{
+  "type": "commonjs",
+  "dependencies": {
+    "@google-cloud/trace-agent": "^7.0.0"
+  }
+}

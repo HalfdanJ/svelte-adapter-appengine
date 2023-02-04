@@ -20,7 +20,7 @@ npm i "${SCRIPT_PATH}/../"
 npm i
 
 # These are peer dependencies that need manual install since we install from folder instead of from npm registry
-npm install polka@1.0.0-next.22 compression@^1.7.4 sirv@^2.0.2
+npm install polka@1.0.0-next.22 compression@^1.7.4 sirv@^2.0.2 @google-cloud/trace-agent@^7.0.0
 
 npm run build
 

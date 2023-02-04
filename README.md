@@ -13,12 +13,14 @@ In your standard SvelteKit project:
 - add adapter to `svelte.config.js`:
 
 ```diff
-+import appengine from "svelte-adapter-appengine";
++import adapter from "svelte-adapter-appengine";
 
 /** @type {import('@sveltejs/kit').Config} */
 export default {
   kit: {
-+   adapter: appengine(),
++   adapter: adapter({
++     useCloudLogging: true
++   }),
     target: "#svelte",
   },
 };
@@ -27,16 +29,23 @@ export default {
 - `npm run build`.
 - Application can then be deployed by running `gcloud app deploy --project <CLOUD_PROJECT_ID> build/app.yaml`. (learn more about gcloud utility [here](https://cloud.google.com/sdk/gcloud))
 
+## Configuration
+
+Following options are available
+
+- `out`: Output directory of build step, defaults to `/build`
+- `useCloudLogging`: Enable or disable [Google Cloud Logging](https://cloud.google.com/logging/docs/overview). When enabled, `console.log`, `console.error` and so on show up with more metadata in Cloud Logging dashboard, and log messages are bundled by request trace id's. Enabled by default.
+- `external`: Node modules that the esbuild step should mark as external.
+- `dependencies`: Node modules that should be added to `package.json` file in the build step. These modules will be fetched when the application is deployed.
+
+The generated `app.yaml` file can be customized by adding a file named `app.yaml` in the root of the project. The adapter will merge this file with the generated `app.yaml` file, enabling for example custom machine types, added routes or any other [app.yaml configuration](https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=node.js)
+
 ## Adapter Output
 
 The SSR part of SvelteKit is hosted on App Engine in a nodejs runtime. It's running using [polka](https://github.com/lukeed/polka) mimicking [@sveltejs/adapter-node
 ](https://github.com/sveltejs/kit/tree/master/packages/adapter-node).
 
 Static files are served directly from Cloud Storage without going through the nodejs webserver. Routes for all the static assets are automatically generated in `app.yaml` by the adapter.
-
-## Configuration
-
-The generated `app.yaml` file can be customized by adding a file named `app.yaml` in the root of the project. The adapter will merge this file with the generated `app.yaml` file, enabling for example custom machine types, added routes or any other [app.yaml configuration](https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=node.js)
 
 ## Example
 
