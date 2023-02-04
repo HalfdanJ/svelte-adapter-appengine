@@ -16,6 +16,12 @@ type AdapterOptions = {
   external?: string[];
   /** Dependencies to be added in package.json */
   dependencies?: Record<string, string>;
+  /**
+   * Nodejs version to target, defaults to 16
+   * Available runtimes can be seen here:
+   * https://cloud.google.com/appengine/docs/standard/nodejs/runtime
+   */
+  nodejsRuntime?: number;
 };
 
 export default function plugin(options?: AdapterOptions): Adapter;

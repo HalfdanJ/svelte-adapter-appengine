@@ -8,7 +8,7 @@ const files = fileURLToPath(new URL('files', import.meta.url));
 
 /** @type {import('.').default} **/
 export default function entrypoint(options = {}) {
-  const {out = 'build', external = [], useCloudLogging = true, dependencies = {}} = options;
+  const {out = 'build', external = [], useCloudLogging = true, dependencies = {}, nodejsRuntime = 16} = options;
 
   return {
     name: 'svelte-adapter-appengine',
@@ -50,7 +50,7 @@ export default function entrypoint(options = {}) {
       await esbuild.build({
         entryPoints: [`${temporary}/entry.js`],
         outfile: `${out}/index.js`,
-        target: 'node16',
+        target: `node${nodejsRuntime}`,
         bundle: true,
         platform: 'node',
         format: 'cjs',
@@ -139,7 +139,7 @@ export default function entrypoint(options = {}) {
         join(out, 'app.yaml'),
         YAML.stringify({
           ...yaml,
-          runtime: 'nodejs16',
+          runtime: `nodejs${nodejsRuntime}`,
           entrypoint: 'node index.js',
           // eslint-disable-next-line camelcase
           default_expiration: '0h',

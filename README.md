@@ -37,6 +37,7 @@ Following options are available
 - `useCloudLogging`: Enable or disable [Google Cloud Logging](https://cloud.google.com/logging/docs/overview). When enabled, `console.log`, `console.error` and so on show up with more metadata in Cloud Logging dashboard, and log messages are bundled by request trace id's. Enabled by default.
 - `external`: Node modules that the esbuild step should mark as external.
 - `dependencies`: Node modules that should be added to `package.json` file in the build step. These modules will be fetched when the application is deployed.
+- `nodejsRuntime`: Node version to use in appengine runtime. See available runtimes [here](https://cloud.google.com/appengine/docs/standard/nodejs/runtime). Defaults to `16`
 
 The generated `app.yaml` file can be customized by adding a file named `app.yaml` in the root of the project. The adapter will merge this file with the generated `app.yaml` file, enabling for example custom machine types, added routes or any other [app.yaml configuration](https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=node.js)
 
