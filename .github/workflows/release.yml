@@ -12,10 +12,11 @@ jobs:
     env:
       HUSKY: 0
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v2
+      - uses: google-github-actions/release-please-action@v3
         id: release
         with:
           release-type: node
+          package-name: svelte-adapter-appengine
           bump-minor-pre-major: true # remove this to enable breaking changes causing 1.0.0 tag
 
       # The logic below handles the npm publication:
@@ -33,7 +34,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
         if: ${{ steps.release.outputs.release_created }}
 
-      - run: npm install
+      - run: npm ci
         if: ${{ steps.release.outputs.release_created }}
 
       - run: npm publish
