@@ -45,7 +45,6 @@
     "xo": "^0.53.1"
   },
   "dependencies": {
-    "@google-cloud/trace-agent": "^7.1.2",
     "esbuild": "^0.17.3",
     "polka": "^1.0.0-next.22",
     "sirv": "^2.0.2",

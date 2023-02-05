@@ -6,7 +6,6 @@ import {manifest} from 'MANIFEST';
 import polka from 'polka';
 import sirv from 'sirv';
 import {Server} from 'SERVER';
-import {start as startTrace} from '@google-cloud/trace-agent';
 
 async function setupCloudLogging() {
   const bunyan = await import('bunyan');
@@ -29,14 +28,73 @@ async function setupCloudLogging() {
   console.debug = (...args) => logger.debug.call(logger, ...args);
 }
 
-// eslint-disable-next-line no-undef
-if (USE_CLOUD_LOGGING) {
-  setupCloudLogging();
+/** @type {import('polka').Middleware} */
+let tracerMiddleware = (_, __, next) => next();
+
+async function setupCloudTracing() {
+  const {start} = await import('@google-cloud/trace-agent');
+
+  const tracer = start();
+
+  /** @type {import('polka').Middleware} */
+  tracerMiddleware = async (request, response, next) => {
+    const traceOptions = {
+      name: request.path,
+      url: request.originalUrl,
+      method: request.method,
+      traceContext: tracer.propagation.extract(key => request.headers[key]),
+      skipFrames: 1,
+    };
+
+    tracer.runInRootSpan(traceOptions, async rootSpan => {
+    // Set response trace context.
+      const responseTraceContext = tracer.getResponseTraceContext(
+        traceOptions.traceContext,
+        tracer.isRealSpan(rootSpan),
+      );
+
+      if (responseTraceContext) {
+        tracer.propagation.inject(
+          (k, v) => response.setHeader(k, v),
+          responseTraceContext,
+        );
+      }
+
+      if (!tracer.isRealSpan(rootSpan)) {
+        next();
+        return;
+      }
+
+      tracer.wrapEmitter(request);
+      tracer.wrapEmitter(response);
+
+      const url = `${request.protocol}://${request.headers.host}${request.originalUrl}`;
+      rootSpan.addLabel(tracer.labels.HTTP_METHOD_LABEL_KEY, request.method);
+      rootSpan.addLabel(tracer.labels.HTTP_URL_LABEL_KEY, url);
+      rootSpan.addLabel(tracer.labels.HTTP_SOURCE_IP, request.ip);
+
+      // Wrap end
+      const originalEnd = response.end;
+      response.end = function (cb) {
+        response.end = originalEnd;
+
+        const returned = response.end.apply(cb, arguments);
+
+        if (request.route && request.route.path) {
+          rootSpan.addLabel('express/request.route.path', request.route.path);
+        }
+
+        rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
+        rootSpan.endSpan();
+        return returned;
+      };
+
+      next();
+    });
+  };
 }
 
 installPolyfills();
-
-const tracer = startTrace();
 
 const server = new Server(manifest);
 
@@ -50,73 +108,24 @@ const staticServe = sirv(path.join(__dirname, 'storage'), {
 });
 
 /** @type {import('polka').Middleware} */
-const ssr = async (request_, response, next) => {
-  const traceOptions = {
-    name: request_.path,
-    url: request_.originalUrl,
-    method: request_.method,
-    traceContext: tracer.propagation.extract(key => request_.headers[key]),
-    skipFrames: 1,
-  };
+const ssr = async (request_, response) => {
+  /** @type {Request} */
+  let request;
 
-  tracer.runInRootSpan(traceOptions, async rootSpan => {
-    // Set response trace context.
-    const responseTraceContext = tracer.getResponseTraceContext(
-      traceOptions.traceContext,
-      tracer.isRealSpan(rootSpan),
-    );
+  try {
+    request = await getRequest(
+      {base: getBase(request_.headers), request: request_});
+  } catch (error) {
+    response.statusCode = error.status || 400;
+    response.end(error.reason || 'Invalid request body');
+    return;
+  }
 
-    if (responseTraceContext) {
-      tracer.propagation.inject(
-        (k, v) => response.setHeader(k, v),
-        responseTraceContext,
-      );
-    }
-
-    if (!tracer.isRealSpan(rootSpan)) {
-      return next();
-    }
-
-    const url = `${request_.headers['X-Forwarded-Proto'] || 'http'}://${
-      request_.headers.host
-    }${request_.originalUrl}`;
-
-    // We use the path part of the url as the span name and add the full
-    // url as a label
-    rootSpan.addLabel(tracer.labels.HTTP_METHOD_LABEL_KEY, request_.method);
-    rootSpan.addLabel(tracer.labels.HTTP_URL_LABEL_KEY, url);
-    rootSpan.addLabel(tracer.labels.HTTP_SOURCE_IP, request_.connection.remoteAddress);
-
-    /** @type {Request} */
-    let request;
-
-    try {
-      request = await getRequest(
-        {base: getBase(request_.headers), request: request_});
-    } catch (error) {
-      response.statusCode = error.status || 400;
-      response.end(error.reason || 'Invalid request body');
-
-      rootSpan.addLabel('connect/request.route.path', request_.originalUrl);
-      rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
-      rootSpan.endSpan();
-      return;
-    }
-
-    const renderSpan = tracer.createChildSpan({name: 'sveltekit.respond'});
-    const ssrResponse = await server.respond(request, {
-      getClientAddress() {
-        return request.headers.get('x-forwarded-for');
-      },
-    });
-    renderSpan.endSpan();
-
-    setResponse(response, ssrResponse);
-
-    rootSpan.addLabel('connect/request.route.path', request_.originalUrl);
-    rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
-    rootSpan.endSpan();
-  });
+  setResponse(response, await server.respond(request, {
+    getClientAddress() {
+      return request.headers.get('x-forwarded-for');
+    },
+  }));
 };
 
 /**
@@ -136,18 +145,30 @@ function handleAh(_request, response) {
   response.end('OK');
 }
 
-const polkaServer = polka()
-  .get('/_ah/start', handleAh)
-  .use(staticServe)
-  .use(ssr);
+(async () => {
+  // eslint-disable-next-line no-undef
+  if (USE_CLOUD_LOGGING) {
+    await setupCloudLogging();
+  }
 
-const port = process.env.PORT || 8080;
-const listenOptions = {port};
+  // eslint-disable-next-line no-undef
+  if (USE_CLOUD_TRACING) {
+    await setupCloudTracing();
+  }
 
-server.init({env: process.env}).then(() => {
-  polkaServer.listen(listenOptions, () => {
-    console.log(`Listening on ${port}`);
+  const polkaServer = polka()
+    .get('/_ah/start', handleAh)
+    .use(tracerMiddleware)
+    .use(staticServe)
+    .use(ssr);
+
+  const port = process.env.PORT || 8080;
+  const listenOptions = {port};
+
+  server.init({env: process.env}).then(() => {
+    polkaServer.listen(listenOptions, () => {
+      console.log(`Listening on ${port}`);
+    });
   });
-});
+})();
 
-export {polkaServer as server};

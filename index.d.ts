@@ -12,6 +12,8 @@ type AdapterOptions = {
   out?: string;
   /** Use improved cloud logging, defaults to true */
   useCloudLogging?: boolean;
+  /** Enable cloud tracing */
+  useCloudTracing?: boolean;
   /** Modules marked as external in esbuild */
   external?: string[];
   /** Dependencies to be added in package.json */
