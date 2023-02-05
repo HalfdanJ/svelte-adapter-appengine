@@ -12,7 +12,7 @@ jobs:
     env:
       HUSKY: 0
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v2
+      - uses: GoogleCloudPlatform/release-please-action@v3
         id: release
         with:
           release-type: node
