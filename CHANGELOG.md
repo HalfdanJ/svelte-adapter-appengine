@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.10.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.0...v0.10.1) (2023-02-05)
+
+
+### Bug Fixes
+
+* Make cloud tracing optional middleware ([#71](https://www.github.com/HalfdanJ/svelte-adapter-appengine/issues/71)) ([5e98af1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/commit/5e98af1adad17a6c5134b997ae33f02236e38006))
+
 ## [0.10.0](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.9.3...v0.10.0) (2023-02-04)
 
 
