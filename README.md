@@ -13,15 +13,19 @@ In your standard SvelteKit project:
 - add adapter to `svelte.config.js`:
 
 ```diff
+import { vitePreprocess } from '@sveltejs/kit/vite';
 +import adapter from "svelte-adapter-appengine";
 
 /** @type {import('@sveltejs/kit').Config} */
-export default {
+const config = {
+	preprocess: vitePreprocess(),
+
   kit: {
 +   adapter: adapter(),
-    target: "#svelte",
   },
 };
+
+export default config;
 ```
 
 - `npm run build`.
