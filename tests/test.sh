@@ -9,13 +9,19 @@ SCRIPT_PATH=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 TEST_DIR="$(mktemp -d)"
 # Sveltekit version to test against, defaulting to latest
 SVELTEKIT_VERSION=${SVELTEKIT_VERSION:-latest}
+PLATFORM=${PLATFORM:-ubuntu-latest}
 # Flag determining if we should run tests against nodejs server
 TEST_SERVER=${TEST_SERVER:-true}
+# If we are on windows, disable TEST_SERVER
+if [ "$PLATFORM" = "windows-latest" ]; then
+  TEST_SERVER=false
+fi
 
 echo "TEST_DIR: ${TEST_DIR}"
 echo "PWD: ${PWD}"
 echo "SCRIPT_PATH: ${SCRIPT_PATH}"
 echo "SVELTEKIT_VERSION: ${SVELTEKIT_VERSION}"
+echo "PLATFORM: ${PLATFORM}"
 echo "TEST_SERVER: ${TEST_SERVER}"
 
 # Install create svelte
