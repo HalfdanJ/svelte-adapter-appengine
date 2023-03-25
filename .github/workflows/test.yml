@@ -33,5 +33,5 @@ jobs:
         with:
           node-version: "16"
       - run: npm install
-      - run: TEST_SERVER={{matrix.test-server}} tests/test.sh
+      - run: TEST_SERVER=${{matrix.test-server}} tests/test.sh
         shell: bash
