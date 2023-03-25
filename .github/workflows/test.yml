@@ -32,4 +32,5 @@ jobs:
         with:
           node-version: "16"
       - run: npm install
-      - run: npm run test:integration
+      - run: tests/test.sh
+        shell: bash
