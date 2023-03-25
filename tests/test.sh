@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -x
+# Fail on any error
+set -e
 
+# Get the directory of this script
 SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
+# Create a temp directory for the test
 TEST_DIR="$(mktemp -d)"
 # Sveltekit version to test against, defaulting to latest
 SVELTEKIT_VERSION=${SVELTEKIT_VERSION:-latest}

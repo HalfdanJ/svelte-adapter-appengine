@@ -5,7 +5,7 @@
   "scripts": {
     "fix": "xo --fix",
     "test": "xo",
-    "test:integration": "tests/test.sh"
+    "test:integration": "cd tests; ./test.sh"
   },
   "repository": {
     "type": "git",
