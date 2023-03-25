@@ -4,7 +4,7 @@ set -x
 set -e
 
 # Get the directory of this script
-SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
+SCRIPT_PATH=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 # Create a temp directory for the test
 TEST_DIR="$(mktemp -d)"
 # Sveltekit version to test against, defaulting to latest
@@ -18,7 +18,7 @@ echo "SVELTEKIT_VERSION: ${SVELTEKIT_VERSION}"
 # Install create svelte
 npm install --no-save create-svelte@"${SVELTEKIT_VERSION}"
 # Create svelte demo app
-node "${SCRIPT_PATH}"/create-svelte.js "${TEST_DIR}"
+node "${SCRIPT_PATH}/create-svelte.js" "${TEST_DIR}"
 
 # Copy overwrites
 cp -a "${SCRIPT_PATH}"/overwrites/. "${TEST_DIR}"
