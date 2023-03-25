@@ -9,11 +9,14 @@ SCRIPT_PATH=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 TEST_DIR="$(mktemp -d)"
 # Sveltekit version to test against, defaulting to latest
 SVELTEKIT_VERSION=${SVELTEKIT_VERSION:-latest}
+# Flag determining if we should run tests against nodejs server
+TEST_SERVER=${TEST_SERVER:-true}
 
 echo "TEST_DIR: ${TEST_DIR}"
 echo "PWD: ${PWD}"
 echo "SCRIPT_PATH: ${SCRIPT_PATH}"
 echo "SVELTEKIT_VERSION: ${SVELTEKIT_VERSION}"
+echo "TEST_SERVER: ${TEST_SERVER}"
 
 # Install create svelte
 npm install --no-save create-svelte@"${SVELTEKIT_VERSION}"
@@ -36,7 +39,14 @@ npm install polka@1.0.0-next.22 compression@^1.7.4 sirv@^2.0.2 @google-cloud/tra
 npm run build
 
 popd
-npx start-server-and-test "node ${TEST_DIR}/build/index.js" http://localhost:8080 "TEST_DIR=${TEST_DIR}/ mocha ${SCRIPT_PATH}/../tests/test.js"
+
+# Run tests again server if TEST_SERVER
+if [ "$TEST_SERVER" = true ]; then
+  # Unable to run this on windows
+  npx start-server-and-test \"node ${TEST_DIR}/build/index.js\" http://localhost:8080 \"TEST_DIR=${TEST_DIR}/ mocha ${SCRIPT_PATH}/../tests/test-*.js\"
+else
+  TEST_DIR=${TEST_DIR} npx mocha "${SCRIPT_PATH}/../tests/test-yaml.js"
+fi
 
 # To test on real appengine instance
 # pushd $TEST_DIR
