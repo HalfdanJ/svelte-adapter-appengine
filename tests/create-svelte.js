@@ -1,5 +1,5 @@
-import {create} from 'create-svelte';
 import process from 'node:process';
+import {create} from 'create-svelte';
 
 // Get target directory
 const target = process.argv[2];
