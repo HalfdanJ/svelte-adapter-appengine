@@ -64,6 +64,9 @@
       ],
       "n/file-extension-in-import": [
         "off"
+      ],
+      "xo/import-order": [
+        "off"
       ]
     }
   }

@@ -1,5 +1,6 @@
-import {writeFileSync, existsSync, readFileSync} from 'node:fs';
+import {existsSync, readFileSync, writeFileSync} from 'node:fs';
 import {join, posix} from 'node:path';
+
 import {fileURLToPath} from 'node:url';
 import YAML from 'yaml';
 import esbuild from 'esbuild';
@@ -70,16 +71,16 @@ export default function entrypoint(options = {}) {
       const prerenderedPages = Array.from(builder.prerendered.pages, ([src, page]) => ({
         url: src + '/?$',
         // eslint-disable-next-line camelcase
-        static_files: join('storage', page.file),
-        upload: join('storage', page.file),
+        static_files: join('storage', page.file).replaceAll('\\', '/'),
+        upload: join('storage', page.file).replaceAll('\\', '/'),
         secure: 'always',
       }));
 
       const prerenderedAssets = Array.from(builder.prerendered.assets, ([path, {type}]) => ({
         url: path,
         // eslint-disable-next-line camelcase
-        static_files: join('storage', path),
-        upload: join('storage', path),
+        static_files: join('storage', path).replaceAll('\\', '/'),
+        upload: join('storage', path).replaceAll('\\', '/'),
         secure: 'always',
         // eslint-disable-next-line camelcase
         mime_type: type,
@@ -97,8 +98,8 @@ export default function entrypoint(options = {}) {
         .map(file => ({
           url: '/' + file,
           // eslint-disable-next-line camelcase
-          static_files: join('storage', file),
-          upload: join('storage', file),
+          static_files: join('storage', file).replaceAll('\\', '/'),
+          upload: join('storage', file).replaceAll('\\', '/'),
           secure: 'always',
         }));
 
