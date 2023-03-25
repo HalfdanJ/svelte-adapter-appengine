@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.1...v0.10.2) (2023-03-25)
+
+
+### Bug Fixes
+
+* Handle paths on windows correctly ([#90](https://github.com/HalfdanJ/svelte-adapter-appengine/issues/90)) ([b49d982](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/b49d982491cb81c92f6a6087a6c2df37efcf162a))
+
 ### [0.10.1](https://www.github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.0...v0.10.1) (2023-02-05)
 
 
