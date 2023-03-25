@@ -3,13 +3,20 @@ set -x
 
 SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
 TEST_DIR="$(mktemp -d)"
+# Sveltekit version to test against, defaulting to latest
+SVELTEKIT_VERSION=${SVELTEKIT_VERSION:-latest}
 
 echo "TEST_DIR: ${TEST_DIR}"
 echo "PWD: ${PWD}"
 echo "SCRIPT_PATH: ${SCRIPT_PATH}"
+echo "SVELTEKIT_VERSION: ${SVELTEKIT_VERSION}"
 
-yes "" | "$(npm init svelte@next "${TEST_DIR}")"
-# yes "" | "$(npm init svelte@1.0.0-next.232 "${TEST_DIR}")"
+# Install create svelte
+npm install --no-save create-svelte@"${SVELTEKIT_VERSION}"
+# Create svelte demo app
+node "${SCRIPT_PATH}"/create-svelte.js "${TEST_DIR}"
+
+# Copy overwrites
 cp -a "${SCRIPT_PATH}"/overwrites/. "${TEST_DIR}"
 
 pushd $TEST_DIR
