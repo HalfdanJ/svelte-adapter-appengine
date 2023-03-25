@@ -1,16 +1,23 @@
 # svelte-adapter-appengine
 
-Utilize the [Google Cloud App Engine](https://cloud.google.com/appengine) infrastructure to host SvelteKit content.
+Easily deploy your SvelteKit applications on [Google Cloud App Engine](https://cloud.google.com/appengine) with the `svelte-adapter-appengine` package.
 
 [![npm](https://img.shields.io/npm/v/svelte-adapter-appengine?color=green)](https://www.npmjs.com/package/svelte-adapter-appengine)
 [![Tests](https://github.com/halfdanj/svelte-adapter-appengine/actions/workflows/test.yml/badge.svg)](https://github.com/halfdanj/svelte-adapter-appengine/actions/workflows/test.yml)
+[![SvelteKit](https://img.shields.io/badge/Works%20with-SvelteKit-ff3e00.svg)](https://kit.svelte.dev/)
 
-## Setup
+## Getting Started
 
-In your standard SvelteKit project:
+To set up the adapter in your SvelteKit project:
 
-- `npm install --save-dev svelte-adapter-appengine`
-- add adapter to `svelte.config.js`:
+1. Install the package as a development dependency:
+
+```bash
+npm install --save-dev svelte-adapter-appengine
+
+```
+
+2. Update your `svelte.config.js` to use the adapter:
 
 ```diff
 import { vitePreprocess } from '@sveltejs/kit/vite';
@@ -28,42 +35,58 @@ const config = {
 export default config;
 ```
 
-- `npm run build`.
-- Application can then be deployed by running `gcloud app deploy --project <CLOUD_PROJECT_ID> build/app.yaml`. (learn more about gcloud utility [here](https://cloud.google.com/sdk/gcloud))
+3. Build your application:
 
-## Configuration
+```bash
+npm run build
+```
 
-Following configuration options are available
+4. Deploy your application to App Engine:
+
+```bash
+gcloud app deploy --project <CLOUD_PROJECT_ID> build/app.yaml
+```
+
+Learn more about the `gcloud` utility in the [official documentation](https://cloud.google.com/sdk/gcloud)
+
+## Configuration Options
+
+Customize the adapter behavior using the following options:
 
 ```ts
 adapter({
-  // Output directory of build step, defaults to `/build`
+  // Build output directory (default: `/build`)
   out: "/build",
-  // Enable Google Cloud Tracing Agent, enabling this with Cloud Logging improves
-  // logs in Google Cloud Logging by bunding them by traces
+
+  // Enable Google Cloud Tracing Agent for improved logging (default: `false`)
   useCloudTracing: false,
-  // Enable or disable Google Cloud Logging (https://cloud.google.com/logging/docs/overview).
+
+  // Enable or disable Google Cloud Logging (default: `false`)
+  // See: https://cloud.google.com/logging/docs/overview
   useCloudLogging: false,
-  // Node modules that the esbuild step should mark as external.
+
+  // Specify external modules for the esbuild step
   external: [],
-  // Node modules that should be added to `package.json` file in the build step.
-  // These modules will be fetched when the application is deployed.
+
+  // Specify Node modules to be added to the `package.json` file in the build step
+  // These modules will be fetched when the application is deployed
   dependencies: [],
-  // Node version to use in appengine runtime. See available runtimes here:
-  // https://cloud.google.com/appengine/docs/standard/nodejs/runtime.
+
+  // Set the Node.js version for the App Engine runtime (default: `16`)
+  // See available runtimes: https://cloud.google.com/appengine/docs/standard/nodejs/runtime
   nodejsRuntime: 16,
 });
 ```
 
-The generated `app.yaml` file can be customized by adding a file named `app.yaml` in the root of the project. The adapter will merge this file with the generated `app.yaml` file, enabling for example custom machine types, added routes or any other [app.yaml configuration](https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=node.js)
+You can also customize the generated `app.yaml` file by creating an `app.yaml` file in your project root. The adapter will merge your custom configuration with the generated `app.yaml`, allowing you to define custom machine types, routes, or other [app.yaml configurations](https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=node.js).
 
 ## Adapter Output
 
-The SSR part of SvelteKit is hosted on App Engine in a nodejs runtime. It's running using [polka](https://github.com/lukeed/polka) mimicking [@sveltejs/adapter-node
+The Server-Side Rendering (SSR) part of SvelteKit is hosted on App Engine using a Node.js runtime, using [polka](https://github.com/lukeed/polka) to mimic [@sveltejs/adapter-node
 ](https://github.com/sveltejs/kit/tree/master/packages/adapter-node).
 
-Static files are served directly from Cloud Storage without going through the nodejs webserver. Routes for all the static assets are automatically generated in `app.yaml` by the adapter.
+Static files are served directly from Cloud Storage, bypassing the Node.js web server. The adapter automatically generates routes for all static assets in the `app.yaml` file.
 
-## Example
+## Example Application
 
-An examplee app can be accessed on [https://svelte-demo-329602.uc.r.appspot.com/](https://svelte-demo-329602.uc.r.appspot.com/), this is the default demo app from sveltekit deployed with the default settings.
+Check out a live example application at [https://svelte-demo-329602.uc.r.appspot.com/](https://svelte-demo-329602.uc.r.appspot.com/). This demo app is the default SvelteKit template deployed with the default adapter settings.
