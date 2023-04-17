@@ -1,8 +1,6 @@
 import * as fs from 'node:fs';
-
 import process from 'node:process';
 import {describe, it} from 'mocha';
-
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 

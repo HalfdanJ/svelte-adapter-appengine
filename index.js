@@ -1,6 +1,5 @@
 import {existsSync, readFileSync, writeFileSync} from 'node:fs';
 import {join, posix} from 'node:path';
-
 import {fileURLToPath} from 'node:url';
 import YAML from 'yaml';
 import esbuild from 'esbuild';
