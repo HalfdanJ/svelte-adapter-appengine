@@ -136,7 +136,9 @@ export default function entrypoint(options = {}) {
       ];
 
       if (serverRoutes.length > 99) {
-        throw new Error('Too many url routes: ' + serverRoutes.length);
+        builder.log.error(`You've exceeded the maximum number of routes (99) allowed in AppEngine app.yaml, and you have ${serverRoutes.length} routes.`);
+        builder.log.error("This often happens when you have a lot of static assets.");
+        builder.log.error("If possible, use vites asset importing instead: https://kit.svelte.dev/docs/assets");
       }
 
       writeFileSync(
