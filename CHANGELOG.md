@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.3](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.2...v0.10.3) (2023-05-26)
+
+
+### Bug Fixes
+
+* Improve error handling with large number of asset routes ([#103](https://github.com/HalfdanJ/svelte-adapter-appengine/issues/103)) ([fd58810](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/fd5881082dc40dcb8709a56095a3e5c23047022b))
+
 ## [0.10.2](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.1...v0.10.2) (2023-03-25)
 
 
