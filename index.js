@@ -1,6 +1,6 @@
-import {existsSync, readFileSync, writeFileSync} from 'node:fs';
-import {join, posix} from 'node:path';
-import {fileURLToPath} from 'node:url';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, posix } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
 import esbuild from 'esbuild';
 
@@ -8,7 +8,7 @@ const files = fileURLToPath(new URL('files', import.meta.url));
 
 /** @type {import('.').default} **/
 export default function entrypoint(options = {}) {
-  const {out = 'build', external = [], useCloudLogging = false, useCloudTracing = false, dependencies = {}, nodejsRuntime = 16} = options;
+  const { out = 'build', external = [], useCloudLogging = false, useCloudTracing = false, dependencies = {}, nodejsRuntime = 16 } = options;
 
   return {
     name: 'svelte-adapter-appengine',
@@ -26,12 +26,14 @@ export default function entrypoint(options = {}) {
       const relativePath = posix.relative(temporary, builder.getServerDirectory());
 
       // Copy server handler
-      builder.copy(files, temporary, {replace: {
-        SERVER: `${relativePath}/index.js`,
-        MANIFEST: './manifest.js',
-        USE_CLOUD_LOGGING: useCloudLogging,
-        USE_CLOUD_TRACING: useCloudTracing,
-      }});
+      builder.copy(files, temporary, {
+        replace: {
+          SERVER: `${relativePath}/index.js`,
+          MANIFEST: './manifest.js',
+          USE_CLOUD_LOGGING: useCloudLogging,
+          USE_CLOUD_TRACING: useCloudTracing,
+        }
+      });
 
       writeFileSync(
         `${temporary}/manifest.js`,
@@ -75,7 +77,7 @@ export default function entrypoint(options = {}) {
         secure: 'always',
       }));
 
-      const prerenderedAssets = Array.from(builder.prerendered.assets, ([path, {type}]) => ({
+      const prerenderedAssets = Array.from(builder.prerendered.assets, ([path, { type }]) => ({
         url: path,
         // eslint-disable-next-line camelcase
         static_files: join('storage', path).replaceAll('\\', '/'),
@@ -152,6 +154,11 @@ export default function entrypoint(options = {}) {
           handlers: serverRoutes,
         }),
       );
+
+      // Copy cron.yaml if it exists
+      if (existsSync('cron.yaml')) {
+        builder.copy('cron.yaml', join(out, 'cron.yaml'), { replace: true });
+      }
 
       builder.log.success(`To deploy, run "gcloud app deploy --project <CLOUD_PROJECT_ID> ${out}/app.yaml"`);
     },
