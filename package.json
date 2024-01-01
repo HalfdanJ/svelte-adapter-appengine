@@ -1,6 +1,6 @@
 {
   "name": "svelte-adapter-appengine",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Adapter for Svelte that integrates with Google Cloud Appengine ",
   "scripts": {
     "fix": "eslint --fix . && prettier --write .",

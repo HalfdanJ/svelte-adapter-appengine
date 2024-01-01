@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v1.0.0...v1.1.0) (2024-01-01)
+
+
+### Features
+
+* Copy `cron.yaml` to build directory ([#108](https://github.com/HalfdanJ/svelte-adapter-appengine/issues/108)) ([c5dc37c](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/c5dc37cacbf4efc55662113be5597ecb70760ee8))
+
 ## [1.0.0](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.3...v1.0.0) (2024-01-01)
 
 
