@@ -1,11 +1,12 @@
-import adapter from 'svelte-adapter-appengine';
+// eslint-disable-next-line import/no-unresolved, node/no-missing-import
+import adapter from "svelte-adapter-appengine";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   kit: {
-    adapter: adapter({useCloudLogging: false}),
+    adapter: adapter({ useCloudLogging: false }),
     prerender: {
-      entries: ['/test.json', '*'],
+      entries: ["/test.json", "*"],
     },
   },
 };

@@ -12,7 +12,7 @@ updates:
       interval: "weekly"
 
   # Maintain dependencies for npm
-  - package-ecosystem: "npm" 
+  - package-ecosystem: "npm"
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"

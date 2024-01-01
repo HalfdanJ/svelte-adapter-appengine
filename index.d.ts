@@ -1,6 +1,6 @@
-import {type Adapter} from '@sveltejs/kit';
+import { type Adapter } from "@sveltejs/kit";
 // eslint-disable-next-line import/no-unassigned-import
-import './ambient.js';
+import "./ambient.js";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/naming-convention

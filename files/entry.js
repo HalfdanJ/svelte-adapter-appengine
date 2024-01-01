@@ -1,22 +1,28 @@
-import path from 'node:path';
-import process from 'node:process';
-import {installPolyfills} from '@sveltejs/kit/node/polyfills';
-import {getRequest, setResponse} from '@sveltejs/kit/node';
-import {manifest} from 'MANIFEST';
-import polka from 'polka';
-import sirv from 'sirv';
-import {Server} from 'SERVER';
+/* eslint-disable node/no-unsupported-features/es-syntax */
+/* eslint-disable node/no-missing-import */
+/* eslint-disable import/no-unresolved */
+import path from "node:path";
+import process from "node:process";
+import { installPolyfills } from "@sveltejs/kit/node/polyfills";
+import { getRequest, setResponse } from "@sveltejs/kit/node";
+import { manifest } from "MANIFEST";
+import polka from "polka";
+import sirv from "sirv";
+import { Server } from "SERVER";
+
+// eslint-disable-next-line no-undef
+const dir = __dirname;
 
 async function setupCloudLogging() {
-  const bunyan = await import('bunyan');
-  const {LoggingBunyan} = await import('@google-cloud/logging-bunyan');
+  const bunyan = await import("bunyan");
+  const { LoggingBunyan } = await import("@google-cloud/logging-bunyan");
 
   const loggingBunyan = new LoggingBunyan();
   const logger = bunyan.createLogger({
-    name: process.env.GAE_SERVICE || 'local',
+    name: process.env.GAE_SERVICE || "local",
     streams: [
       // Log to Cloud Logging, logging at 'info' and above
-      loggingBunyan.stream('info'),
+      loggingBunyan.stream("info"),
     ],
   });
 
@@ -32,7 +38,7 @@ async function setupCloudLogging() {
 let tracerMiddleware = (_, __, next) => next();
 
 async function setupCloudTracing() {
-  const {start} = await import('@google-cloud/trace-agent');
+  const { start } = await import("@google-cloud/trace-agent");
 
   const tracer = start();
 
@@ -42,12 +48,12 @@ async function setupCloudTracing() {
       name: request.path,
       url: request.originalUrl,
       method: request.method,
-      traceContext: tracer.propagation.extract(key => request.headers[key]),
+      traceContext: tracer.propagation.extract((key) => request.headers[key]),
       skipFrames: 1,
     };
 
-    tracer.runInRootSpan(traceOptions, async rootSpan => {
-    // Set response trace context.
+    tracer.runInRootSpan(traceOptions, async (rootSpan) => {
+      // Set response trace context.
       const responseTraceContext = tracer.getResponseTraceContext(
         traceOptions.traceContext,
         tracer.isRealSpan(rootSpan),
@@ -78,13 +84,16 @@ async function setupCloudTracing() {
       response.end = function (cb) {
         response.end = originalEnd;
 
-        const returned = response.end.apply(cb, arguments);
+        const returned = response.end.apply(cb);
 
         if (request.route && request.route.path) {
-          rootSpan.addLabel('express/request.route.path', request.route.path);
+          rootSpan.addLabel("express/request.route.path", request.route.path);
         }
 
-        rootSpan.addLabel(tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY, response.statusCode);
+        rootSpan.addLabel(
+          tracer.labels.HTTP_RESPONSE_CODE_LABEL_KEY,
+          response.statusCode,
+        );
         rootSpan.endSpan();
         return returned;
       };
@@ -98,8 +107,7 @@ installPolyfills();
 
 const server = new Server(manifest);
 
-// eslint-disable-next-line unicorn/prefer-module
-const staticServe = sirv(path.join(__dirname, 'storage'), {
+const staticServe = sirv(path.join(dir, "storage"), {
   etag: true,
   maxAge: 0,
   immutable: false,
@@ -107,42 +115,48 @@ const staticServe = sirv(path.join(__dirname, 'storage'), {
   brotli: true,
 });
 
+/**
+ * @param {import('http').IncomingHttpHeaders} headers
+ * @returns
+ */
+function getBase(headers) {
+  const { host } = headers;
+  const isLocalhost = host.split(":")[0] === "localhost";
+  const protocol =
+    headers["x-forwarded-proto"] || (isLocalhost ? "http" : "https");
+  return `${protocol}://${host}`;
+}
+
 /** @type {import('polka').Middleware} */
 const ssr = async (request_, response) => {
   /** @type {Request} */
   let request;
 
   try {
-    request = await getRequest(
-      {base: getBase(request_.headers), request: request_});
+    request = await getRequest({
+      base: getBase(request_.headers),
+      request: request_,
+    });
   } catch (error) {
     response.statusCode = error.status || 400;
-    response.end(error.reason || 'Invalid request body');
+    response.end(error.reason || "Invalid request body");
     return;
   }
 
-  setResponse(response, await server.respond(request, {
-    getClientAddress() {
-      return request.headers.get('x-forwarded-for');
-    },
-  }));
+  setResponse(
+    response,
+    await server.respond(request, {
+      getClientAddress() {
+        return request.headers.get("x-forwarded-for");
+      },
+    }),
+  );
 };
-
-/**
- * @param {import('http').IncomingHttpHeaders} headers
- * @returns
- */
-function getBase(headers) {
-  const host = headers.host;
-  const isLocalhost = host.split(':')[0] === 'localhost';
-  const protocol = headers['x-forwarded-proto'] || (isLocalhost ? 'http' : 'https');
-  return `${protocol}://${host}`;
-}
 
 /** @type {import('polka').Middleware} */
 function handleAh(_request, response) {
   response.statusCode = 200;
-  response.end('OK');
+  response.end("OK");
 }
 
 (async () => {
@@ -157,18 +171,17 @@ function handleAh(_request, response) {
   }
 
   const polkaServer = polka()
-    .get('/_ah/start', handleAh)
+    .get("/_ah/start", handleAh)
     .use(tracerMiddleware)
     .use(staticServe)
     .use(ssr);
 
   const port = process.env.PORT || 8080;
-  const listenOptions = {port};
+  const listenOptions = { port };
 
-  server.init({env: process.env}).then(() => {
+  server.init({ env: process.env }).then(() => {
     polkaServer.listen(listenOptions, () => {
       console.log(`Listening on ${port}`);
     });
   });
 })();
-
