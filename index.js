@@ -8,7 +8,7 @@ const files = fileURLToPath(new URL('files', import.meta.url));
 
 /** @type {import('.').default} **/
 export default function entrypoint(options = {}) {
-  const {out = 'build', external = [], useCloudLogging = false, useCloudTracing = false, dependencies = {}, nodejsRuntime = 16} = options;
+  const {out = 'build', external = [], useCloudLogging = false, useCloudTracing = false, dependencies = {}, nodejsRuntime = 18} = options;
 
   return {
     name: 'svelte-adapter-appengine',

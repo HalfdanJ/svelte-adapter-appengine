@@ -20,7 +20,7 @@ npm install --save-dev svelte-adapter-appengine
 2. Update your `svelte.config.js` to use the adapter:
 
 ```diff
-import { vitePreprocess } from '@sveltejs/kit/vite';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 +import adapter from "svelte-adapter-appengine";
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -72,9 +72,9 @@ adapter({
   // These modules will be fetched when the application is deployed
   dependencies: [],
 
-  // Set the Node.js version for the App Engine runtime (default: `16`)
+  // Set the Node.js version for the App Engine runtime (default: `18`)
   // See available runtimes: https://cloud.google.com/appengine/docs/standard/nodejs/runtime
-  nodejsRuntime: 16,
+  nodejsRuntime: 18,
 });
 ```
 
@@ -89,4 +89,4 @@ Static files are served directly from Cloud Storage, bypassing the Node.js web s
 
 ## Example Application
 
-Check out a live example application at [https://svelte-demo-329602.uc.r.appspot.com/](https://svelte-demo-329602.uc.r.appspot.com/). This demo app is the default SvelteKit template deployed with the default adapter settings.
+Check out a live example application at [https://svelte-adapter-demo.uc.r.appspot.com/](https://svelte-adapter-demo.uc.r.appspot.com/). This demo app is the default SvelteKit template deployed with the default adapter settings.
