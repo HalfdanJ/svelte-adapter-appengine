@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.0](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.3...v1.0.0) (2024-01-01)
+
+
+### Features
+
+* Change default nodejs runtime to 18 ([#145](https://github.com/HalfdanJ/svelte-adapter-appengine/issues/145)) ([7bacc4c](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/7bacc4cd050f7e8f0de8118270911ccad643c5b8))
+
+
+### Bug Fixes
+
+* Mark sveltekit 2 as valid peer dependency ([#148](https://github.com/HalfdanJ/svelte-adapter-appengine/issues/148)) ([c531361](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/c5313613e2b34ca2e54d10343e171f66f21346e5))
+
+
+### Miscellaneous Chores
+
+* release 1.0.0 ([cb6696f](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/cb6696fcc7a296ab8c2bdd15acfd71d33aa64768))
+
 ## [0.10.3](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v0.10.2...v0.10.3) (2023-05-26)
 
 
