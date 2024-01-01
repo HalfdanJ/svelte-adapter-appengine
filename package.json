@@ -1,10 +1,10 @@
 {
   "name": "svelte-adapter-appengine",
-  "version": "0.10.3",
+  "version": "1.0.0",
   "description": "Adapter for Svelte that integrates with Google Cloud Appengine ",
   "scripts": {
-    "fix": "xo --fix",
-    "test": "xo",
+    "fix": "eslint --fix . && prettier --write .",
+    "lint": "eslint . && prettier --check .",
     "test:integration": "tests/test.sh"
   },
   "repository": {
@@ -35,39 +35,30 @@
     "files"
   ],
   "peerDependencies": {
-    "@sveltejs/kit": "^1.0.0"
+    "@sveltejs/kit": "^1.0.0 || ^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
     "mocha": "^10.2.0",
+    "prettier": "^3.1.1",
     "start-server-and-test": "^2.0.0",
-    "xo": "^0.54.1"
+    "xo": "^0.56.0"
   },
   "dependencies": {
-    "esbuild": "^0.18.1",
+    "esbuild": "^0.19.3",
     "polka": "^1.0.0-next.22",
     "sirv": "^2.0.2",
     "yaml": "^2.2.1"
   },
-  "xo": {
-    "space": true,
-    "rules": {
-      "no-useless-call": [
-        "off"
-      ],
-      "node/prefer-global/process": [
-        "off"
-      ],
-      "unicorn/prefer-top-level-await": [
-        "off"
-      ],
-      "n/file-extension-in-import": [
-        "off"
-      ],
-      "xo/import-order": [
-        "off"
-      ]
-    }
+  "engines": {
+    "node": ">=16"
   }
 }

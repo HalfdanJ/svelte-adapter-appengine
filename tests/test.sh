@@ -17,12 +17,17 @@ if [ "$PLATFORM" = "windows-latest" ]; then
   TEST_SERVER=false
 fi
 
+# Get the versions of peer dependencies that need to be manually installed
+SIRV_VERSION="$(npm list --depth=0 | grep sirv | awk '{print $2}')"
+POLKA_VERSION="$(npm list --depth=0 | grep polka | awk '{print $2}')"
+
 echo "TEST_DIR: ${TEST_DIR}"
 echo "PWD: ${PWD}"
 echo "SCRIPT_PATH: ${SCRIPT_PATH}"
 echo "SVELTEKIT_VERSION: ${SVELTEKIT_VERSION}"
 echo "PLATFORM: ${PLATFORM}"
 echo "TEST_SERVER: ${TEST_SERVER}"
+echo "PEER DEPENDENCIES: sirv: ${SIRV_VERSION}, polka: ${POLKA_VERSION}"
 
 # Install create svelte
 npm install --no-save create-svelte@"${SVELTEKIT_VERSION}"
@@ -40,7 +45,7 @@ npm i "${SCRIPT_PATH}/../"
 npm i
 
 # These are peer dependencies that need manual install since we install from folder instead of from npm registry
-npm install polka@1.0.0-next.22 compression@^1.7.4 sirv@^2.0.2 @google-cloud/trace-agent@^7.0.0
+npm i $SIRV_VERSION $POLKA_VERSION
 
 npm run build
 
@@ -56,6 +61,6 @@ fi
 
 # To test on real appengine instance
 # pushd $TEST_DIR
-# gcloud app deploy --project svelte-demo-329602 -q --version e2e-test --no-promote build/app.yaml
+# gcloud app deploy --project svelte-adapter-demo -q --version e2e-test --no-promote build/app.yaml
 # popd
 rm -rf $TEST_DIR
