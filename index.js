@@ -6,7 +6,7 @@ import esbuild from "esbuild";
 
 const files = fileURLToPath(new URL("files", import.meta.url));
 
-/** @type {import('.').default} **/
+/** @type {import('.').default} */
 export default function entrypoint(options = {}) {
   const {
     out = "build",
@@ -14,7 +14,7 @@ export default function entrypoint(options = {}) {
     useCloudLogging = false,
     useCloudTracing = false,
     dependencies = {},
-    nodejsRuntime = 16,
+    nodejsRuntime = 18,
   } = options;
 
   return {
