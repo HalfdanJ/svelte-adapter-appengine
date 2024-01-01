@@ -20,7 +20,7 @@ npm install --save-dev svelte-adapter-appengine
 2. Update your `svelte.config.js` to use the adapter:
 
 ```diff
-import { vitePreprocess } from '@sveltejs/kit/vite';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 +import adapter from "svelte-adapter-appengine";
 
 /** @type {import('@sveltejs/kit').Config} */
