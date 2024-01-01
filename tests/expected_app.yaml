@@ -40,6 +40,6 @@ handlers:
   - url: /.*
     secure: always
     script: auto
-runtime: nodejs16
+runtime: nodejs18
 entrypoint: node index.js
 default_expiration: 0h
