@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import { fileURLToPath } from "node:url";
 import YAML from "yaml";
@@ -194,6 +194,11 @@ export default function entrypoint(options = {}) {
           handlers: serverRoutes,
         }),
       );
+
+      // Copy cron.yaml if it exists
+      if (existsSync("cron.yaml")) {
+        copyFileSync("cron.yaml", join(out, "cron.yaml"));
+      }
 
       builder.log.success(
         `To deploy, run "gcloud app deploy --project <CLOUD_PROJECT_ID> ${out}/app.yaml"`,
