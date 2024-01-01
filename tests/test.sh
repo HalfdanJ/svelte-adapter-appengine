@@ -56,6 +56,6 @@ fi
 
 # To test on real appengine instance
 # pushd $TEST_DIR
-# gcloud app deploy --project svelte-demo-329602 -q --version e2e-test --no-promote build/app.yaml
+# gcloud app deploy --project svelte-adapter-demo -q --version e2e-test --no-promote build/app.yaml
 # popd
 rm -rf $TEST_DIR
