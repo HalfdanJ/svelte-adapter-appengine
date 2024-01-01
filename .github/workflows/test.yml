@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "18"
       - run: npm install
       - run: npm test
   integration:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "18"
       - run: npm install
       - run: PLATFORM=${{matrix.platform}} tests/test.sh
         shell: bash
