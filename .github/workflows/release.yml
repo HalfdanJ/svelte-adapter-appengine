@@ -17,7 +17,6 @@ jobs:
         with:
           release-type: node
           package-name: svelte-adapter-appengine
-          bump-minor-pre-major: true # remove this to enable breaking changes causing 1.0.0 tag
 
       # The logic below handles the npm publication:
       # The if statements ensure that a publication only occurs when a new release is created
@@ -30,7 +29,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
           registry-url: "https://registry.npmjs.org"
         if: ${{ steps.release.outputs.release_created }}
 
