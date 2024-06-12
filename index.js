@@ -15,6 +15,7 @@ export default function entrypoint(options = {}) {
     useCloudTracing = false,
     dependencies = {},
     nodejsRuntime = 18,
+    defaultYamlFile = "app.yaml"
   } = options;
 
   return {
@@ -140,9 +141,9 @@ export default function entrypoint(options = {}) {
 
       // Load existing app.yaml if it exists
       let yaml = {};
-      if (existsSync("app.yaml")) {
-        builder.log.minor("Existing app.yaml found");
-        yaml = YAML.parse(readFileSync("app.yaml").toString());
+      if (existsSync(defaultYamlFile)) {
+        builder.log.minor(`Existing ${defaultYamlFile} found`);
+        yaml = YAML.parse(readFileSync(defaultYamlFile).toString());
       }
 
       const serverRoutes = [
