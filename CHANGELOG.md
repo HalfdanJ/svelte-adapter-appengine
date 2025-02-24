@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v1.1.0...v1.2.0) (2025-02-24)
+
+
+### Features
+
+* Change default nodejs runtime to nodejs22 ([#217](https://github.com/HalfdanJ/svelte-adapter-appengine/issues/217)) ([9475afc](https://github.com/HalfdanJ/svelte-adapter-appengine/commit/9475afcb36cc6d7411eccb1e06169519b1e542f5))
+
 ## [1.1.0](https://github.com/HalfdanJ/svelte-adapter-appengine/compare/v1.0.0...v1.1.0) (2024-01-01)
 
 
