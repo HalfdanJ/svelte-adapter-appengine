@@ -34,6 +34,5 @@ jobs:
         with:
           node-version: "22"
       - run: npm ci
-      - run: node tests/test.js
-        env:
-          PLATFORM: ${{matrix.platform}}
+      - run: PLATFORM=${{matrix.platform}} tests/test.sh
+        shell: bash
