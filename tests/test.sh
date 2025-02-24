@@ -54,7 +54,7 @@ if [ "$TEST_SERVER" = true ]; then
   # Unable to run this on windows
   npx start-server-and-test "node ${TEST_DIR}/build/index.js" http://localhost:8080 "TEST_DIR=${TEST_DIR} vitest run ${SCRIPT_PATH}"
 else
-  TEST_DIR=${TEST_DIR} npx vitest run "${SCRIPT_PATH}/test-yaml.js"
+  TEST_DIR=${TEST_DIR} npx vitest run "${SCRIPT_PATH}/yaml.test.js"
 fi
 
 # To test on real appengine instance
