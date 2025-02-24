@@ -146,7 +146,6 @@ export default function entrypoint(options = {}) {
       }
 
       const serverRoutes = [
-        ...(yaml.handlers ?? []),
         ...prerenderedPages,
         ...prerenderedRedirects,
         ...prerenderedAssets,
@@ -169,6 +168,7 @@ export default function entrypoint(options = {}) {
           secure: "always",
           script: "auto",
         },
+        ...(yaml.handlers ?? []),
       ];
 
       if (serverRoutes.length > 99) {
