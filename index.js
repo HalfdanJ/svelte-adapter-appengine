@@ -14,7 +14,7 @@ export default function entrypoint(options = {}) {
     useCloudLogging = false,
     useCloudTracing = false,
     dependencies = {},
-    nodejsRuntime = 18,
+    nodejsRuntime = 22,
   } = options;
 
   return {
