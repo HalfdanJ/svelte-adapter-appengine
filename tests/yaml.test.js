@@ -1,12 +1,6 @@
 import * as fs from "node:fs";
 import process from "node:process";
-import { describe, it } from "mocha";
-import chai from "chai";
-import chaiHttp from "chai-http";
-
-const { expect } = chai;
-
-chai.use(chaiHttp);
+import { describe, it, expect } from "vitest";
 
 describe("app.yaml test", () => {
   it("generates correct app.yaml", () => {
@@ -16,7 +10,7 @@ describe("app.yaml test", () => {
       .toString()
       .replaceAll("\r", "");
 
-    expect(yaml).to.eq(
+    expect(yaml).toBe(
       fs
         .readFileSync("tests/expected_app.yaml")
         .toString()
@@ -33,6 +27,6 @@ describe("app.yaml test", () => {
       fs.readFileSync("tests/expected_package.json").toString(),
     );
 
-    expect(packageJson).to.deep.equal(expectedJson);
+    expect(packageJson).toEqual(expectedJson);
   });
 });
