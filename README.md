@@ -72,9 +72,9 @@ adapter({
   // These modules will be fetched when the application is deployed
   dependencies: [],
 
-  // Set the Node.js version for the App Engine runtime (default: `18`)
+  // Set the Node.js version for the App Engine runtime (default: `22`)
   // See available runtimes: https://cloud.google.com/appengine/docs/standard/nodejs/runtime
-  nodejsRuntime: 18,
+  nodejsRuntime: 22,
 });
 ```
 
