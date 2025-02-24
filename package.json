@@ -5,7 +5,7 @@
   "scripts": {
     "fix": "eslint --fix . && prettier --write .",
     "lint": "eslint . && prettier --check .",
-    "test:integration": "tests/test.sh"
+    "test": "tests/test.sh"
   },
   "repository": {
     "type": "git",
@@ -38,8 +38,6 @@
     "@sveltejs/kit": "^1.0.0 || ^2.0.0"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
-    "chai-http": "^4.3.0",
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-node": "^4.1.0",
@@ -47,9 +45,9 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.1.2",
-    "mocha": "^10.2.0",
     "prettier": "^3.1.1",
     "start-server-and-test": "^2.0.0",
+    "vitest": "^1.6.1",
     "xo": "^0.58.0"
   },
   "dependencies": {
