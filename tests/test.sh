@@ -29,10 +29,8 @@ echo "PLATFORM: ${PLATFORM}"
 echo "TEST_SERVER: ${TEST_SERVER}"
 echo "PEER DEPENDENCIES: sirv: ${SIRV_VERSION}, polka: ${POLKA_VERSION}"
 
-# Install create svelte
-npm install --no-save create-svelte@"${SVELTEKIT_VERSION}"
-# Create svelte demo app
-node "${SCRIPT_PATH}/create-svelte.js" "${TEST_DIR}"
+# Create svelte-kit demo app
+npx sv create "${TEST_DIR}" --template demo --types ts --no-add-ons --no-install
 
 # Copy overwrites
 cp -a "${SCRIPT_PATH}"/overwrites/. "${TEST_DIR}"
