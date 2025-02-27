@@ -128,15 +128,40 @@ export default function entrypoint(options = {}) {
       );
 
       // Add yaml entries for all files outside _app directory, such as favicons
-      const additionalClientAssets = clientFiles
-        .filter((file) => !file.startsWith("_app/"))
-        .map((file) => ({
-          url: `/${file}`,
-          // eslint-disable-next-line camelcase
-          static_files: join("storage", file).replaceAll("\\", "/"),
-          upload: join("storage", file).replaceAll("\\", "/"),
-          secure: "always",
-        }));
+      const groupedFiles = {};
+      const additionalClientAssets = [];
+      // Group files by the first directory in their path
+      clientFiles.filter((file) => !file.startsWith("_app/")).forEach(path => {
+        if (path.includes('/')) {
+          const parts = path.split('/');
+          const firstDir = parts[0]; // The first directory in the path
+
+          if (!groupedFiles[firstDir]) {
+              groupedFiles[firstDir] = [];
+          }
+          groupedFiles[firstDir].push(path);
+        } else {
+          const config = {
+            url: `/${path}`,
+            static_files: join("storage", path).replaceAll("\\", "/"),
+            upload: join("storage", path).replaceAll("\\", "/"),
+            secure: "always",
+          }
+          additionalClientAssets.push(config);
+        }
+      });
+
+      // Generate configuration objects
+      Object.keys(groupedFiles).forEach(dir => {
+          const regexBase = dir + '/(.+/)?([^/]+)'; // Create regex for capturing everything under the directory
+          const config = {
+              url: `/${regexBase}`,
+              static_files: `storage/${dir}/\\1\\2`,
+              upload: `storage/${regexBase}`,
+              secure: 'always',
+          };
+          additionalClientAssets.push(config);
+      });
 
       // Load existing app.yaml if it exists
       let yaml = {};
